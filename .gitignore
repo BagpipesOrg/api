@@ -1,0 +1,40 @@
+# Dependency directories
+node_modules/
+dist/
+package-lock.json
+yarn-error.log
+
+# Compiled output
+*.js
+*.js.map
+
+# Configuration files
+tsconfig.json
+tsconfig.prod.json
+
+# Environment variables (optional)
+.env
+
+# Editor/IDE specific files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Vim
+*.swap.*
+
+# Log files
+*.log
+
+# Build files
+build/
+out/
