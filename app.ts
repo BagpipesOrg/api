@@ -50,7 +50,7 @@ app.post('/call/template', (req, res) => {
 
 
 // call a scenerio - call a scenario you created in the UI - todo
-app.post('/call/scenerio', (req, res) => {
+app.post('/call/scenario', (req, res) => {
   const jsonData = req.body.scenarioid;
   res.json({ receivedData: "todo" });
 });
