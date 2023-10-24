@@ -43,7 +43,7 @@ app.post('/xcm-asset-transfer', async (req, res) => {
     console.log(`assetid:`, assetid);
     const amount = req.body.amount;
     console.log(`amount:`, amount);
-    const destinationaddress = req.body.scenarioid;
+    const destinationaddress = req.body.destinationaddress;
     console.log(`destinationaddress:`, destinationaddress);
     console.log(`route_tx start`);
     const tx = await route_tx(sourchain, destchain, assetid, amount, destinationaddress);
