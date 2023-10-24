@@ -27,7 +27,6 @@
     "@polkadot/api-base": "^10.9.1",
     "@polkadot/api-contract": "^10.9.1",
     "@polkadot/api-derive": "^10.9.1",
-    "@polkadot/hw-ledger": "^12.4.2",
     "@polkadot/keyring": "^12.4.2",
     "@polkadot/networks": "^12.4.2",
     "@polkadot/phishing": "^0.21.5",
