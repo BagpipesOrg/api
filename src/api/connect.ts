@@ -1,5 +1,5 @@
 import { ApiPromise, WsProvider, SubmittableResult } from "@polkadot/api";
-import { CHAIN_METADATA } from "./metadata";
+import { CHAIN_METADATA } from "./Chains";
 import { cryptoWaitReady } from "@polkadot/util-crypto";
 
 

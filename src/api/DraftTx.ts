@@ -107,15 +107,10 @@ export async function genericPolkadotToParachain(paraid: number, amount: number,
 // working: https://hydradx.subscan.io/xcm_message/polkadot-047344414db62b7c424c8de9037c5a99edd0794c
 export async function dotToHydraDx(amount: number, targetAddress: string){
     const paraid = 2034; // TODO: call from ChainInfo
-	let api: any;
-	try {
-        api = await connectToWsEndpoint('polkadot');
-    } catch (error) {
-        // If there's an error connecting, send a toast message and terminate the function
-        toast.error("Failed to connect to the endpoint. Please ensure you're connected and try again.");
-        return; 
-    }
- //   console.log(`drafting dot to hydradx`);
+	console.log(`cant connect`);
+	const api = await connectToWsEndpoint('polkadot');
+    console.log(`connect`);
+    console.log(`drafting dot to hydradx`);
 
 	const rawTargetAddress = getRawAddress(targetAddress);
 
@@ -146,7 +141,7 @@ export async function dotToHydraDx(amount: number, targetAddress: string){
             fun: { Fungible: amount },
         }
     ];
-
+	console.log(`Creating tx`);
     const tx = api.tx.xcmPallet.limitedReserveTransferAssets(
         { V3: destination },
         { V3: targetAccount },
@@ -201,9 +196,8 @@ export async function dotToParachain(amount: number,  targetAddress: string){
     0,
 { Unlimited: null }  // weight_limit
   );
-//	console.log(`tx created!`);
-//	console.log(tx.toHex());
-	return tx;
+
+  return tx;
 }
 
 
@@ -214,13 +208,6 @@ export async function dotToParachain(amount: number,  targetAddress: string){
 // HYDRADX > parachain
 export async function hydraDxToParachain(amount: number, assetId: number, destAccount: string, paraId: number) {
 	const api = await connectToWsEndpoint('hydraDx');
-
-
-	console.log(`[hydradx to parachain]amount :`, amount);
-	console.log(`[hydradx to parachain]assetId :`, assetId);
-	console.log(`[hydradx to parachain]destAccount :`, destAccount);
-	console.log(`[hydradx to parachain]paraId :`, paraId);
-	
 
     const asset = {
         fun: {
@@ -314,20 +301,9 @@ export async function assethub_to_hydra(assetid: number, amount: number, account
 /// assethub > parachain, send an asset on assethub to receiving parachain
 export async function assethub_to_parachain(assetid: string, amount: number, accountid: string, paraid: number) {
 
-	console.log(`assethub_to_parachain]amount :`, amount);
-	console.log(`[assethub_to_parachain]assetId :`, assetid);
-
-	console.log(`[assethub_to_parachain]paraId :`, paraid);
-	
 	const api = await connectToWsEndpoint('assetHub');
-
-//	const blake2 = (value: Uint8Array): Uint8Array => blake2AsU8a(value, 512);
-//	const ZERO = blake2(new Uint8Array(32))
 	
 	const accountId = raw_address_now(accountid);//uint8ArrayToHex(blake2(getRawAddress(accountid)).map((x, i): number => (x + 256 - ZERO[i]) % 256));
-
-	console.log(`[assethub_to_parachain]destAccount :`, accountId);
-	//console.log(`[assethub_to_parachain]`);
 
 	//const paraid = 2034;//hydradx
 	//const accountid = "0xca477d2ed3c433806a8ce7969c5a1890187d765ab8080d3793b49b42aa9e805f";
