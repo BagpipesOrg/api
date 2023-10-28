@@ -1,5 +1,18 @@
 import connectToWsEndpoint from './connect';
 
+function parachain_times(time: number) {
+  const times = {
+    100800: "7d",
+    28800: "2d",
+    72000: "5d",
+    1209600: "12w",
+    10512000: "2y"
+  };
+//  Auction duration	7 days	100_800	The total duration of the slot auction, subject to the candle auction mechanism.
+// Opening period	2 days	28_800	The opening period of the slot auction.
+// Ending period	5 days	72_000	The ending period of the slot auction.
+}
+
 
 export async function find_ingress_polkadot_channels(paraid: number): Promise<[number]> {
 	const api = await connectToWsEndpoint('polkadot');

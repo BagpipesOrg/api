@@ -76,11 +76,52 @@ async function tx_test(){
     console.log(`transaction routing ok`);
 }
 
+type LeaseInfo = [string, string]
+
+async function xcml(paraId: number): Promise<void>  {
+    const api = await connectToWsEndpoint('polkadot');
+        try {
+          // Query the storage to get the list of leases for the specified paraId
+          const leases = (await api.query.slots.leases(paraId)).toHuman() as LeaseInfo[];       
+          const leasePeriod = await api.consts.slots.leasePeriod.toHuman() as number;
+          const leaseOffset = await api.consts.slots.leaseOffset.toHuman() as number;
+ //        console.log(`lease: `, leaseOffset, leasePeriod);
+ 
+    const x = 1; // Replace with the desired number of periods
+  
+   // Calculate the lease period duration in blocks
+   const leasePeriodBlocks = leasePeriod + leaseOffset;
+   
+   // Calculate the number of lease periods
+   const numberOfLeasePeriods = leases[0].length - 1;
+  //          console.log(`lease is: `, leases);
+   // Calculate the current lease time in blocks
+   const l1 = leases[0][1].replace(/,/g, '');
+   console.log(`l1;`, l1);
+   const l2 = parseFloat(l1);
+   console.log(`l2:`, l2);
+   const currentLeaseTimeBlocks = l2 as number;
+    console.log(`lease:`, currentLeaseTimeBlocks);
+    console.log(`numberOfLeasePeriods:`, numberOfLeasePeriods);
+    console.log(`leasePeriodBlocks:`, parseFloat(leasePeriodBlocks.toString()));
+   // Calculate the total lease time in blocks
+   const totalLeaseTimeBlocks = currentLeaseTimeBlocks + numberOfLeasePeriods * parseFloat(leasePeriodBlocks.toString());
+        console.log(`totalLeaseTimeBlocks: `, totalLeaseTimeBlocks);
+
+
+        } catch (error) {
+          console.error('Error:', error);
+        }
+
+}
+
+
 async function main(){
         console.log(`running api tests`);
         await test_connection();
         await tx_test();
         await xcm_test();
+        await xcml(2034);
         console.log(`api tests finished`);
 }
 
