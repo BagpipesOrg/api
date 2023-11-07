@@ -36,7 +36,7 @@ Here we deal with 1) drafting a transaction.
 
 ###### Code example: 
 ```shell
-$ curl -X POST http://127.0.0.1:8080/xcm-asset-transfer   -H "Content-Type: application/json"   -d '{
+curl -X POST http://127.0.0.1:8080/xcm-asset-transfer   -H "Content-Type: application/json"   -d '{
     "sourchain": "assethub",
     "destchain": "hydradx",
     "assetid": "1984",
@@ -69,7 +69,7 @@ Check what hrmp channels are avaliable for a parachain connected to polkadot.
 
 ###### Code example:  
 ```shell
-$ curl -X POST -H "Content-Type: application/json" -d '{"paraid": 1000}' http://localhost:8080/polkadot/openchannels 
+curl -X POST -H "Content-Type: application/json" -d '{"paraid": 1000}' http://localhost:8080/polkadot/openchannels 
 ```
 
 *Input:*
