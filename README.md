@@ -37,13 +37,28 @@ Here we deal with 1) drafting a transaction.
 ###### 1. Draft transaction: code example: 
 ```shell
 curl -X POST http://127.0.0.1:8080/xcm-asset-transfer   -H "Content-Type: application/json"   -d '{
-    "sourchain": "assethub",
-    "destchain": "hydradx",
-    "assetid": "1984",
-    "amount": 1000000,
-    "destinationaddress": "7MinRZBqmh7SaJsNjsMuJHw3teB1Q834vvG1zSMPHQ2DQaAa"
+    "sourchain": "polkadot",
+    "destchain": "assetHub",
+    "assetid": "0",
+    "amount": 1000000000,
+    "destinationaddress": "5GYdCV9F3gg9gnmWU8nrt8tXCxMXDbcGpsdX1gJStCx9yZKK"
   }'
 ```
+
+###### Result:
+```json
+{"txdata":"0xf404630903000100a10f0300010100c63c1fb2c2d4a97b9aa07b951159b273e0d6a740914f71c074a93499d10e3e4503040000000002286bee0000000000"}
+```
+
+*input:*   
+- sourchain = assethub/hydradx/polkadot   
+- deschain = hydradx/polkadot/assethub   
+- assetid = id of asset to send   
+- amount = raw amount to send   
+- destination address = address of reciever on the destination chain  
+
+The developer can then create their own frontend so that their user can sign the transaction. Thereafter, the transaction can be broadcast. 
+
 
 ###### 2. Sign Extrinsic: 
 
@@ -58,24 +73,13 @@ If you go to [polkadot-js apps sign and verify area](https://polkaodt.js.org/app
 Then you can use that signed transaction data to broadcast:
 
 ```json
-{"signed_transaction_data": "0x28be425591af35b9195d252f5b07f3a998ac1a8577181e387c6966c92eec4300ab8bfe8f7fffdac7c87cabd0358eac87368e770c45b9f54df5e2370979498e85" }
+{"signed_transaction_data": "EXAMPLE_0x28be425591af35b9195d252f5b07f3a998ac1a8577181e387c6966c92eec4300ab8bfe8f7fffdac7c87cabd0358eac87368e770c45b9f54df5e2370979498e85" }
 ```
 
-###### Result:
-```json
-{"txdata":"0xec04630803000100c91f0300010100b673e1853db0a7eb8a38e7a6309d0f5a39c29d929f586f7d5d1e588845e2895703040000000091010000000000"}
-```
 
-*input:*   
-- sourchain = assethub/hydradx/polkadot    
-- deschain = hydradx/polkadot/assethub   
-- assetid = id of asset to send   
-- amount = raw amount to send   
-- destination address = address of reciever on the destination chain  
+###### 3.  Broadcast:
 
-The developer can then create their own frontend so that their user can sign the transaction. Thereafter, the transaction can be broadcast. 
-
-###### Broadcast:
+Then use the signed transaction data and pass it it into the 
 
 ```shell
 curl -X POST -H "Content-Type: application/json" -d '{
