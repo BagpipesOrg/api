@@ -9,7 +9,7 @@ import connectToWsEndpoint from "./connect";
  * @param {string} chain - The name of the chain (e.g. 'polkadot').
  * @param {any} signedExtrinsic - The signed extrinsic to broadcast.
  */
-export async function broadcastToChain(chain: string, signedExtrinsic: any): Promise<void> {
+export async function broadcastToChain(chain: string, signedExtrinsic: any): Promise<any> {
     let api: ApiPromise;
     
     try {
@@ -23,17 +23,16 @@ export async function broadcastToChain(chain: string, signedExtrinsic: any): Pro
         // Broadcast the transaction and watch its status
         const unsub = await signedExtrinsic.send(({ status, events, error }) => {
             if (error) {
-                toast.error(`Transaction error: ${error.message}`);
                 unsub();
                 return;
             }
 
             if (status.isInBlock) {
-                console.log(`Transaction included at blockHash ${status.asInBlock}`);
+                return status.asInBlock;
             } else if (status.isFinalized) {
-                console.log(`Transaction finalized at blockHash ${status.asFinalized}`);
+                return status.asFinalized;
             } else if (status.isDropped || status.isInvalid || status.isUsurped) {
-                console.error(`Error with transaction: ${status.type}`);
+                return status.type;
             }
         });
     } catch (error) {

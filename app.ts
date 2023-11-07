@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import { route_tx } from './src/api/txroute';
 import { inandoutchannels } from "./src/api/xcmhelper";
 
+import { broadcastToChain } from './src/api/broadcast';
 
 const app = express();
 const port = 8080;
@@ -20,6 +21,20 @@ app.post('/polkadot/openchannels', async (req, res) => {
   const channels = await inandoutchannels(paraid);
   res.json({ open_hrmp_channels: channels, sourcechain: paraid });
 });
+
+// /broadcast input: {chain: 'hydradx', tx: ''}
+app.post('/broadcast', async (req, res) => {
+  const chain = req.body.chain;
+  const txdata = req.body.tx; // get the chains paraid
+  if (typeof txdata !== 'string' || txdata.length > 1) {
+    return res.status(400).json({ error: 'Invalid txdata. It must be a number between 0 and 10000.' });
+  }
+
+  const myhash = await broadcastToChain(chain, txdata);
+  
+  res.json({ status: "broadcasted", "hash": myhash });
+});
+
 
 // create scenerio 
 app.post('/create/scenario', async ( req, res) => {
