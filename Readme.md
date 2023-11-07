@@ -76,15 +76,6 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"paraid": 1000}' http://
 *input:*   
 paraid = the paraid(as number) of the chain  
 
-##### `/call/template`:
-
-##### `/call/scenario`:
-
-
-##### `//xcm-native-transfer`:
-
-
-### Code example:  
 
 
 
