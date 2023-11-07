@@ -48,12 +48,12 @@ curl -X POST http://127.0.0.1:8080/xcm-asset-transfer   -H "Content-Type: applic
 ###### 2. Sign Extrinsic: 
 
 Here is a manual way to sign the transaction. 
-
-![Screenshot 2023-11-07 at 13 23 29](https://github.com/XcmSend/api/assets/45230082/37eaee50-f46f-47de-82da-e5f5f8e7ea7f)
+![Screenshot 2023-11-07 at 13 30 19](https://github.com/XcmSend/api/assets/45230082/6e94ab93-96db-4bc2-af81-c6871971a632)
 
 If you go to [polkadot-js apps sign and verify area](https://polkaodt.js.org/apps/#/signing) then paste in the transaction data and sign. then you will receive the signed transaction data as shared below. 
 
-![Screenshot 2023-11-07 at 13 25 16](https://github.com/XcmSend/api/assets/45230082/1f2d0c61-cea9-407a-a2db-72c41ed4b2df)
+![Screenshot 2023-11-07 at 13 31 00](https://github.com/XcmSend/api/assets/45230082/3b37c373-88f7-47ea-b9bd-119eab4902f2)
+
 
 Then you can use that signed transaction data to broadcast:
 
@@ -78,7 +78,7 @@ The developer can then create their own frontend so that their user can sign the
 ###### Broadcast:
 
 ```shell
-curl -X POST -H "Content-Type: application/json" -d
+curl -X POST -H "Content-Type: application/json" -d...
 
 
 ##### `/polkadot/openchannels`:
