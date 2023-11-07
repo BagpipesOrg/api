@@ -69,7 +69,11 @@ Check what hrmp channels are avaliable for a parachain connected to polkadot.
 
 ###### Code example:  
 ```shell
-$ curl -X POST -H "Content-Type: application/json" -d '{"paraid": 1000}' http://localhost:8080/polkadot/openchannels              
+$ curl -X POST -H "Content-Type: application/json" -d '{"paraid": 1000}' http://localhost:8080/polkadot/openchannels    
+```
+
+*Input:*
+```json       
 {"open_hrmp_channels":[1001,1002,2000,2004,2006,2007,2011,2012,2013,2030,2031,2032,2034,2035,2040,2046,2048,2051,2094,2101,2104],"sourcechain":1000}
 ```
 
