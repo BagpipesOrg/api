@@ -69,7 +69,7 @@ Check what hrmp channels are avaliable for a parachain connected to polkadot.
 
 ###### Code example:  
 ```shell
-$ curl -X POST -H "Content-Type: application/json" -d '{"paraid": 1000}' http://localhost:8080/polkadot/openchannels    
+$ curl -X POST -H "Content-Type: application/json" -d '{"paraid": 1000}' http://localhost:8080/polkadot/openchannels 
 ```
 
 *Input:*
