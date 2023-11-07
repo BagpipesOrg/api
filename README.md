@@ -78,8 +78,15 @@ The developer can then create their own frontend so that their user can sign the
 ###### Broadcast:
 
 ```shell
-curl -X POST -H "Content-Type: application/json" -d...
+curl -X POST -H "Content-Type: application/json" -d '{
+  "chain": "polkadot",
+  "tx": "0x91028400f2529946850f8dd66c794a795a6b01a911f25df007e4cf5f97f38a037380f2500114903d6caaa301dfc22a6d19df61ba38b547a70a492eb57bcdcb9298161b18562e13421b314c22a9e007c9e49583f77bb0faf7047f6456c78c5487225e1a8f84b500a50200630903000100a10f0300010100f2529946850f8dd66c794a795a6b01a911f25df007e4cf5f97f38a037380f25003040000000002286bee0000000000"
+}' http://127.0.0.1:8080/broadcast
+```
 
+```
+{"status":"broadcasted"}
+```
 
 ##### `/polkadot/openchannels`:
 
