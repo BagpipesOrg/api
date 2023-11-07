@@ -20,21 +20,9 @@ export async function broadcastToChain(chain: string, signedExtrinsic: any): Pro
     }
 
     try {
-        // Broadcast the transaction and watch its status
-        const unsub = await signedExtrinsic.send(({ status, events, error }) => {
-            if (error) {
-                unsub();
-                return;
-            }
-
-            if (status.isInBlock) {
-                return status.asInBlock;
-            } else if (status.isFinalized) {
-                return status.asFinalized;
-            } else if (status.isDropped || status.isInvalid || status.isUsurped) {
-                return status.type;
-            }
-        });
+       
+        const tx = await api.rpc.author.submitExtrinsic(signedExtrinsic);
+        return tx;
     } catch (error) {
         console.error('Error broadcasting transaction:', error.message || error.toString());
         throw error;
