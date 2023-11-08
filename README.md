@@ -80,10 +80,14 @@ curl -X POST -H "Content-Type: application/json" -d '{"paraid": 1000}' http://lo
 *input:*   
 paraid = the paraid(as number) of the chain  
 
+##### `/broadcast`:
 
+###### Information:  
+Broadcast a transaction using author submitextrinsics 
 
-##### Broadcast:
-
+*input:*   
+- chain = assethub/hydradx/polkadot    
+- tx = signed transaction   
 
 ##### Testing broadcast:
 Broadcast:
