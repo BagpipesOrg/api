@@ -82,4 +82,57 @@ paraid = the paraid(as number) of the chain
 
 
 
+##### Broadcast:
+
+
+##### Testing broadcast:
+Broadcast:
+
+```typescript
+async function broadcast_transaction() {
+    await cryptoWaitReady();
+    console.log(`broadcast_transaction start`);
+    console.log(`generating tx..`);
+    const alice = get_test_account();
+    const pa_tx = (await route_tx('polkadot', 'hydradx', 0, 20000, '16XByL4WpQ4mXzT2D8Fb3vmTLWfHu7QYh5wXX34GvahwPotJ'));
+    console.log(`rawtx:`, pa_tx.toHex());
+    const api = await connectToWsEndpoint('polkadot');
+    const signhere = await pa_tx.signAsync(alice);
+    console.log(`Signature: `, signhere.toHex());
+    const testo = api.tx(signhere); // this will break if the tx is invalid
+    console.log(`Verfied tx:`, testo.toHex());
+    const bhash = await broadcastToChain('polkadot', testo);
+    console.log(`blockhash published: `, bhash.toString());
+    console.log(`broadcast_transaction done`);
+}
+```
+
+Configure the right key in get_test_account and run the tx signing:
+```ts
+tx_si start
+generating tx..
+route_tx start
+polkadot:hydradx
+handleTransfer for Polkadot to HydraDx...
+cant connect
+connect
+drafting dot to hydradx
+Creating tx
+4
+rawtx: 0xf404630803000100c91f0300010100f43376315face751ae6014e8a94301b2c27c0bc4a234e9997ed2c856d13d3d2f030400000000823801000000000000
+Signature:  0x8d0284005400e2f7f5669b26998d8e4d3c1a2c8a2d0a9af827ca54a1cc3509105035c32e01286f7090ae34a1e3b8827ef9c035ede86a2b3e5c16bb6df072541327c7797d07e5934e245ae7c9ce199b2212fe559ff2df0a9ad1d66421aa3828223d8b2e9c8b45020400630803000100c91f0300010100f43376315face751ae6014e8a94301b2c27c0bc4a234e9997ed2c856d13d3d2f030400000000823801000000000000
+Verfied tx: 0x8d0284005400e2f7f5669b26998d8e4d3c1a2c8a2d0a9af827ca54a1cc3509105035c32e01286f7090ae34a1e3b8827ef9c035ede86a2b3e5c16bb6df072541327c7797d07e5934e245ae7c9ce199b2212fe559ff2df0a9ad1d66421aa3828223d8b2e9c8b45020400630803000100c91f0300010100f43376315face751ae6014e8a94301b2c27c0bc4a234e9997ed2c856d13d3d2f030400000000823801000000000000
+```
+
+Copy the verified tx and curl it to the broadcast api:
+
+```shell
+curl -X POST -H "Content-Type: application/json" -d '{
+  "chain": "polkadot",
+  "tx": "0x8d0284005400e2f7f5669b26998d8e4d3c1a2c8a2d0a9af827ca54a1cc3509105035c32e01286f7090ae34a1e3b8827ef9c035ede86a2b3e5c16bb6df072541327c7797d07e5934e245ae7c9ce199b2212fe559ff2df0a9ad1d66421aa3828223d8b2e9c8b45020400630803000100c91f0300010100f43376315face751ae6014e8a94301b2c27c0bc4a234e9997ed2c856d13d3d2f030400000000823801000000000000"
+}' http://127.0.0.1:8080/broadcast
+```
+
+Result:  
+`{"status":"broadcasted","hash":"0xf9b86cd2121c25685b5bbf9efffc5f6c81e7d3b568811860de36dccb09837d2b"}`
 

@@ -21,6 +21,7 @@ export async function broadcastToChain(chain: string, signedExtrinsic: any): Pro
 
     try {
        
+     //   const parsedTransaction = api.tx(signedExtrinsic);
         const tx = await api.rpc.author.submitExtrinsic(signedExtrinsic);
         return tx;
     } catch (error) {
