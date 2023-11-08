@@ -2,6 +2,24 @@ import connectToWsEndpoint from './connect';
 import { route_tx  } from './txroute';
 import * as assert from 'assert';
 import { inandoutchannels } from "./xcmhelper";
+//import { decode, getRegistry } from "@substrate/txwrapper-polkadot";
+import Keyring from "@polkadot/keyring";
+import { hexToU8a, isHex, u8aToHex } from "@polkadot/util";
+import { cryptoWaitReady } from "@polkadot/util-crypto";
+import { broadcastToChain } from './broadcast';
+
+
+
+// random account(subkey generate) used for testing
+export function get_test_account() {
+
+	const e0 = new Keyring({ type: 'sr25519' });
+	const account = e0.addFromUri('resource whip length faint better aspect sphere light clay lab replace collect');
+
+	return account;
+}
+
+
 
 async function test_connection(){
     console.log(`starting connection test`);
@@ -76,11 +94,30 @@ async function tx_test(){
     console.log(`transaction routing ok`);
 }
 
+async function broadcast_transaction() {
+    await cryptoWaitReady();
+    console.log(`broadcast_transaction start`);
+    console.log(`generating tx..`);
+    const alice = get_test_account();
+    const pa_tx = (await route_tx('polkadot', 'hydradx', 0, 20000, '16XByL4WpQ4mXzT2D8Fb3vmTLWfHu7QYh5wXX34GvahwPotJ'));
+    console.log(`rawtx:`, pa_tx.toHex());
+    const api = await connectToWsEndpoint('polkadot');
+    const signhere = await pa_tx.signAsync(alice);
+    console.log(`Signature: `, signhere.toHex());
+    const testo = api.tx(signhere); // this will break if the tx is invalid
+    console.log(`Verfied tx:`, testo.toHex());
+    // uncommend bellow me to test it with /broadcast endpoint
+    const bhash = await broadcastToChain('polkadot', testo);
+    console.log(`blockhash published: `, bhash.toString());
+    console.log(`broadcast_transaction done`);
+}
+
 async function main(){
         console.log(`running api tests`);
-        await test_connection();
-        await tx_test();
-        await xcm_test();
+     await test_connection();
+     await tx_test();
+     await xcm_test();
+     await broadcast_transaction();
         console.log(`api tests finished`);
 }
 

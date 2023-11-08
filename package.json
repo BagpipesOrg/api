@@ -28,12 +28,13 @@
     "@polkadot/extension-dapp": "^0.46.5",
     "@polkadot/extension-inject": "^0.46.5",
     "@polkadot/keyring": "^12.4.2",
+    "@polkadot/metadata": "^4.17.1",
     "@polkadot/networks": "^12.4.2",
     "@polkadot/phishing": "^0.21.5",
     "@polkadot/rpc-augment": "^10.9.1",
     "@polkadot/rpc-core": "^10.9.1",
     "@polkadot/rpc-provider": "^10.9.1",
-    "@polkadot/types": "^10.9.1",
+    "@polkadot/types": "^10.10.1",
     "@polkadot/types-augment": "^10.9.1",
     "@polkadot/types-codec": "^10.9.1",
     "@polkadot/types-create": "^10.9.1",
@@ -43,11 +44,12 @@
     "@polkadot/util": "^12.4.2",
     "@polkadot/util-crypto": "^12.4.2",
     "@polkadot/wasm-crypto": "^7.2.2",
+ 
     "@types/body-parser": "^1.19.4",
     "@types/express": "^4.17.20",
+    "assert": "^2.1.0",
     "body-parser": "^1.20.2",
     "express": "^4.18.2",
-    "assert": "^2.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   }

@@ -2,12 +2,20 @@
 //import { decodeAddress } from '@polkadot/util-crypto';
 import { blake2AsU8a, decodeAddress } from '@polkadot/util-crypto'
 import { hexToU8a, isHex, u8aToHex } from "@polkadot/util";
+//import { createTypeUnsafe, GenericCall, GenericExtrinsic, GenericExtrinsicPayload } from '@polkadot/types';
 
-import endpoints from "./WsEndpoints";
-import { ChainInfo, listChains, CHAIN_METADATA } from "./Chains";
+//import { EXTRINSIC_VERSION } from '@polkadot/types/extrinsic/v4/Extrinsic';
+
+//import { createMetadata } from '@substrate/txwrapper/lib/util';
+import '@polkadot/types-augment';
+//import ExtrinsicV4 from '@polkadot/types/extrinsic/v4/Extrinsic'
+//import { TypeRegistry } from '@polkadot/types/create'
+
+//import endpoints from "./WsEndpoints";
+//import { ChainInfo, listChains, CHAIN_METADATA } from "./Chains";
 import connectToWsEndpoint from "./connect";
 
-import { createType } from '@polkadot/types';
+//import { createType } from '@polkadot/types';
 
 import Keyring from "@polkadot/keyring";
 
@@ -34,7 +42,8 @@ export async function polkadot_to_assethub(amount: number, address: string) {
 	const api = await connectToWsEndpoint('polkadot');
 	const paraid = 1000;
   const accountId = api.createType("AccountId32", address).toHex();
-
+//	const infoblob = api.consts.system.version.toHuman();
+//	console.log(`infoblob:`,  infoblob);
 	//console.log(`Connected to assethub`);
 	const destination = {
 		parents: 0,
@@ -141,7 +150,10 @@ export async function dotToHydraDx(amount: number, targetAddress: string){
             fun: { Fungible: amount },
         }
     ];
-	console.log(`Creating tx`);
+
+
+
+	//console.log(`Creating tx`);
     const tx = api.tx.xcmPallet.limitedReserveTransferAssets(
         { V3: destination },
         { V3: targetAccount },
@@ -150,10 +162,6 @@ export async function dotToHydraDx(amount: number, targetAddress: string){
 		{ Unlimited: null }  // weight_limit
 
     );
- //   console.log(`[dotTohydraDx] tx created!`);
- //   console.log("[dotTohydraDx] tx to hex", tx.toHex());
-    //console.log("[dotTohydraDx] tx to human", tx.toHuman());
-    //console.log("[dotTohydraDx] tx", tx);
 
     return tx;
 }
