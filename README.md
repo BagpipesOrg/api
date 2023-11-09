@@ -120,6 +120,26 @@ Broadcast a transaction using author submitextrinsics
 - tx = signed transaction   
 
 ##### Testing broadcast:
+In order to test the broadcast feature a user must: 
+-  1: git clone https://github.com/XcmSend/api/
+-  2: edit src/api/tests.ts
+-  3: change the seedphrase to an account that has enough tokens to pay tx fee's in the `get_test_acccount` function:
+```
+export function get_test_account() {
+
+	const e0 = new Keyring({ type: 'sr25519' });
+	const account = e0.addFromUri('SET SEEDPHRASE HERE');
+
+	return account;
+}
+```
+-  4:  last but no least, the person needs to uncomment the following lines in the broadcast_transaction function
+```
+  //  const bhash = await broadcastToChain('polkadot', testo);
+ //   console.log(`blockhash published: `, bhash.toString());
+```
+-  5: run: npm run test 
+
 Broadcast:
 
 ```typescript
