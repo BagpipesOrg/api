@@ -28,7 +28,8 @@ In order to send a transaction from one chain to another in the polkadot network
 
 
 1. First we need to draft a transaction;
-2. Then broadcast.
+2. Sign the transaction
+3. Then broadcast.
 
 Here we deal with 1) drafting a transaction. 
 
@@ -58,9 +59,10 @@ curl -X POST http://127.0.0.1:8080/xcm-asset-transfer   -H "Content-Type: applic
 
 The developer can then create their own frontend so that their user can sign the transaction. Thereafter, the transaction can be broadcast. 
 
-After the transaction has been drafted, it needs to be signed. 
 
-###### 2.  Broadcast:
+After the transaction has been drafted, it needs to be signed. You can use whatever signer you want, in order to test it easily we have included the steps in the testing broadcast section bellow.
+
+###### 3.  Broadcast:
 
 Then use the signed transaction data and pass it it into the 
 
@@ -107,7 +109,7 @@ In order to test the broadcast feature a user must:
 -  1: git clone https://github.com/XcmSend/api/
 -  2: edit src/api/tests.ts
 -  3: change the seedphrase to an account that has enough tokens to pay tx fee's in the `get_test_acccount` function:
-```
+```typescript
 export function get_test_account() {
 
 	const e0 = new Keyring({ type: 'sr25519' });
@@ -162,7 +164,7 @@ Signature:  0x8d0284005400e2f7f5669b26998d8e4d3c1a2c8a2d0a9af827ca54a1cc35091050
 Verfied tx: 0x8d0284005400e2f7f5669b26998d8e4d3c1a2c8a2d0a9af827ca54a1cc3509105035c32e01286f7090ae34a1e3b8827ef9c035ede86a2b3e5c16bb6df072541327c7797d07e5934e245ae7c9ce199b2212fe559ff2df0a9ad1d66421aa3828223d8b2e9c8b45020400630803000100c91f0300010100f43376315face751ae6014e8a94301b2c27c0bc4a234e9997ed2c856d13d3d2f030400000000823801000000000000
 ```
 
-Copy the verified tx and curl it to the broadcast api:
+Copy the `verified tx` and curl it to the broadcast api:
 
 ```shell
 curl -X POST -H "Content-Type: application/json" -d '{
