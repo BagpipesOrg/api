@@ -58,7 +58,7 @@ curl -X POST http://127.0.0.1:8080/xcm-asset-transfer   -H "Content-Type: applic
 
 The developer can then create their own frontend so that their user can sign the transaction. Thereafter, the transaction can be broadcast. 
 
-
+After the transaction has been drafted, it needs to be signed. 
 
 ###### 2.  Broadcast:
 
@@ -72,7 +72,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
 ```
 
 ```
-{"status":"broadcasted"}
+{"status":"broadcasted","hash":"0xf9b86cd2121c25685b5bbf9efffc5f6c81e7d3b568811860de36dccb09837d2b"}
 ```
 
 ##### `/polkadot/openchannels`:
