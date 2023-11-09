@@ -59,7 +59,7 @@ curl -X POST http://127.0.0.1:8080/xcm-asset-transfer   -H "Content-Type: applic
 
 The developer can then create their own frontend so that their user can sign the transaction. Thereafter, the transaction can be broadcast. 
 
-
+###### 2.  Sign:
 After the transaction has been drafted, it needs to be signed. You can use whatever signer you want, in order to test it easily we have included the steps in the testing broadcast section bellow.
 
 ###### 3.  Broadcast:
