@@ -28,8 +28,7 @@ In order to send a transaction from one chain to another in the polkadot network
 
 
 1. First we need to draft a transaction;
-2. Then we need to sign it. 
-3. Then boradcast.
+2. Then broadcast.
 
 Here we deal with 1) drafting a transaction. 
 
@@ -60,24 +59,8 @@ curl -X POST http://127.0.0.1:8080/xcm-asset-transfer   -H "Content-Type: applic
 The developer can then create their own frontend so that their user can sign the transaction. Thereafter, the transaction can be broadcast. 
 
 
-###### 2. Sign Extrinsic: 
 
-Here is a manual way to sign the transaction. 
-![Screenshot 2023-11-07 at 13 30 19](https://github.com/XcmSend/api/assets/45230082/6e94ab93-96db-4bc2-af81-c6871971a632)
-
-If you go to [polkadot-js apps sign and verify area](https://polkaodt.js.org/apps/#/signing) then paste in the transaction data and sign. then you will receive the signed transaction data as shared below. 
-
-![Screenshot 2023-11-07 at 13 31 00](https://github.com/XcmSend/api/assets/45230082/3b37c373-88f7-47ea-b9bd-119eab4902f2)
-
-
-Then you can use that signed transaction data to broadcast:
-
-```json
-{"signed_transaction_data": "EXAMPLE_0x28be425591af35b9195d252f5b07f3a998ac1a8577181e387c6966c92eec4300ab8bfe8f7fffdac7c87cabd0358eac87368e770c45b9f54df5e2370979498e85" }
-```
-
-
-###### 3.  Broadcast:
+###### 2.  Broadcast:
 
 Then use the signed transaction data and pass it it into the 
 
