@@ -127,6 +127,7 @@ async function broadcast_transaction() {
     await cryptoWaitReady();
     console.log(`broadcast_transaction start`);
     console.log(`generating tx..`);
+/// set your account keys in the get_test_account to sign and broadcast it in the src/api/tests.ts file
     const alice = get_test_account();
     const pa_tx = (await route_tx('polkadot', 'hydradx', 0, 20000, '16XByL4WpQ4mXzT2D8Fb3vmTLWfHu7QYh5wXX34GvahwPotJ'));
     console.log(`rawtx:`, pa_tx.toHex());
