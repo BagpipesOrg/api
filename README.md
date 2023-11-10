@@ -1,5 +1,12 @@
-## XCMSend Json API
+# XCMSend Json API  
 
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Discord](https://img.shields.io/discord/1155878499240914944?logo=discord&link=https%3A%2F%2Fdiscord.gg%2FfJYcgrB2F)
+[![Book - mdbook](https://img.shields.io/badge/Book-mdbook-orange?logo=gitbook&logoColor=white&style=flat-square)](https://xcmsend.github.io)   
+ [![General badge](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://shields.io/)
+
+[xcmsend.github.io/api](https://xcmsend.github.io/api/index.html)
 
 ## Supported chains: 
  -  Assethub  
