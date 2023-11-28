@@ -1,9 +1,10 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 
 import { route_tx } from './src/api/txroute';
 import { inandoutchannels } from "./src/api/xcmhelper";
-
+import { saveUrl, getUrl } from "./src/api/handledb"
 import { broadcastToChain } from './src/api/broadcast';
 
 const app = express();
@@ -11,6 +12,7 @@ const port = 8080;
 
 // Use body-parser middleware to parse JSON
 app.use(bodyParser.json());
+app.use(cors());
 
 // open channels, list open ingoing and outgoing hrmp channels for paraid
 app.post('/polkadot/openchannels', async (req, res) => {
@@ -45,6 +47,31 @@ app.post('/broadcast', async (req, res) => {
 
 });
 
+
+app.post('/saveUrl', async (req, res) => {
+  const longUrl = req.body;
+
+  try {
+    const shortUrl = await saveUrl(longUrl);
+    res.json({ success: true, shortUrl });
+  } catch (error) {
+    console.error('Error saving URL:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
+// Get URL
+app.get('/getUrl/:shortUrl', async (req, res) => {
+  const { shortUrl }: { shortUrl: string } = req.params;
+
+  try {
+    const longUrl = await getUrl(shortUrl);
+    res.json({ success: true, longUrl });
+  } catch (error) {
+    console.error('Error getting URL:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
 
 // create scenerio 
 app.post('/create/scenario', async ( req, res) => {
