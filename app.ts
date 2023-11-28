@@ -60,6 +60,10 @@ app.post('/saveUrl', async (req, res) => {
   }
 });
 
+app.get('/', async (req, res) => {
+    res.json({ success: true, documentation: "https://xcmsend.github.io/api/index.html" });
+});
+
 // Get URL
 app.get('/getUrl/:shortUrl', async (req, res) => {
   const { shortUrl }: { shortUrl: string } = req.params;
