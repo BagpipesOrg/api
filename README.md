@@ -147,4 +147,8 @@ curl -X POST -H "Content-Type: application/json" -d '{
 Result:  
 `{"status":"broadcasted","hash":"0xf9b86cd2121c25685b5bbf9efffc5f6c81e7d3b568811860de36dccb09837d2b"}`
 
-
+### Public instance:
+```shell
+$ curl https://api.xcmsend.com
+{"success":true,"documentation":"https://xcmsend.github.io/api/index.html"}
+```
