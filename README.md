@@ -15,13 +15,18 @@
 
  
 ### Build:  
+```shell
+$ npm run buildme
 ```
-npm run buildme
+**Note:**
+If you want to enable webhooks, you need to set the enviromental variable:
+```shell
+$ export 
 ```
 
 ### Run:   
-```
-npm run api  
+```shell
+$ npm run api  
 ```
 
 

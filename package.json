@@ -1,10 +1,10 @@
 {
   "name": "xcmsend-api",
-  "version": "1.0.1",
-  "description": "",
+  "version": "0.0.8",
+  "description": "Bagpipes XCM api",
   "main": "index.js",
   "scripts": {
-    "buildme": "npm install && tsc",
+    "buildme": "cp .env.example .env && npm install && tsc",
     "api": "node dist/app.js",
     "test": "ts-node src/api/tests.ts"
   },
@@ -51,8 +51,12 @@
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "node-fetch": "^2.7.0",
     "shortid": "^2.2.16",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "@types/winston": "^2.4.4"
   }
 }

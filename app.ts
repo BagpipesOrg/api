@@ -6,6 +6,9 @@ import { route_tx } from './src/api/txroute';
 import { inandoutchannels } from "./src/api/xcmhelper";
 import { saveUrl, getUrl } from "./src/api/handledb"
 import { broadcastToChain } from './src/api/broadcast';
+import { createWebhook } from './src/utils';
+import logger from './src/logger';
+
 
 const app = express();
 const port = 8080;
@@ -24,6 +27,7 @@ app.post('/polkadot/openchannels', async (req, res) => {
   res.json({ open_hrmp_channels: channels, sourcechain: paraid });
 });
 
+// tx broadcast
 // /broadcast input: {chain: 'hydradx', tx: ''}
 app.post('/broadcast', async (req, res) => {
   const chain = req.body.chain;
@@ -48,6 +52,10 @@ app.post('/broadcast', async (req, res) => {
 });
 
 
+// Save Scenario 
+//router.post('/save', verifyToken, async (req, res) => {
+
+// save data and generate storage key/short url key
 app.post('/saveUrl', async (req, res) => {
   const longUrl = req.body;
 
@@ -80,9 +88,29 @@ app.get('/getUrl/:shortUrl', async (req, res) => {
 // create scenerio 
 app.post('/create/scenario', async ( req, res) => {
   res.json({result: "function coming soon"});
-} )
+} );
 
-// tx broadcast
+
+// curl -X POST -H "Content-Type: application/json" http://localhost:8080/create/webhook
+app.post('/create/webhook', createWebhook);
+
+/*
+app.post('/create/webhook', async ( req, res) => {
+  res.json({result: "function coming soon"});
+} );
+*/
+
+
+
+/*
+/execute
+/createScenario
+router.get('/load/:_id', verifyToken, async (req, res) => {
+router.post('/stopExecution', verifyToken, async (req, res) => {
+router.post('/createWebhook', async (req, res) => {
+router.post('/receiveWebhook', async (req, res) => {
+*/
+
 
 // xcm asset transfer
 // call a scenerio - call a scenario you created in the UI - todo
@@ -115,6 +143,9 @@ app.post('/polkadot/xcm-native-transfer', (req, res) => {
   res.json({ receivedData: "todo" });
 });
 
+
+//
+// db info, display metadata about stored scenarios, amount and so on
 
 
 
