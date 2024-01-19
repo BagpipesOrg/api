@@ -16,6 +16,7 @@
 
 ## DB:    
 Right now the API just use a simple key value inspired json file to store the diagram data, the file can be found at *dist/src/api/urls2.json*.   
+The format is `{storage_key, compressed_diagramdata}`  
  
 
 
@@ -36,6 +37,24 @@ $ npm run api
 
 
 ### Info:  
+
+##### Path: `/scenario/info`;
+### Code:
+```shell
+
+```
+
+TODO
+
+##### Path: `/create/scenario`;
+### Code:
+```shell
+$ curl -X POST -H "Content-Type: application/json" -d '{"source_chain": "polkadot", "dest_chain": "hydraDx", "source_address": "your_source_address", "amount": 100, "assetid": 1}' http://localhost:8080/create/scenario
+$ {"result":"QWdI3KifK"}
+```
+
+TODO
+
 
 
 ##### Path: `/xcm-asset-transfer`:
