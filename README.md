@@ -13,7 +13,12 @@
  -  Polkadot  
  -  HydraDx  
 
+
+## DB:    
+Right now the API just use a simple key value inspired json file to store the diagram data, the file can be found at *dist/src/api/urls2.json*.   
  
+
+
 ### Build:  
 ```shell
 $ npm run buildme

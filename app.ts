@@ -58,9 +58,11 @@ app.post('/broadcast', async (req, res) => {
 // save data and generate storage key/short url key
 app.post('/saveUrl', async (req, res) => {
   const longUrl = req.body;
-
+  console.log(`Saving `, longUrl);
   try {
+    console.log(`saving it`);
     const shortUrl = await saveUrl(longUrl);
+    console.log(`after save shortUrl:`, shortUrl);
     res.json({ success: true, shortUrl });
   } catch (error) {
     console.error('Error saving URL:', error);
@@ -78,6 +80,7 @@ app.get('/getUrl/:shortUrl', async (req, res) => {
 
   try {
     const longUrl = await getUrl(shortUrl);
+    console.log(`getUrl: `, shortUrl);
     res.json({ success: true, longUrl });
   } catch (error) {
     console.error('Error getting URL:', error);
