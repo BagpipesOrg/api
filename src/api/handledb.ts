@@ -30,10 +30,10 @@ const writeDatabase = async (data: Database): Promise<void> => {
 };
 
 const saveUrl = async (longUrl: any): Promise<string> => {
- //  console.log( `saveurl start`)
+   console.log( `saveurl start`)
   const data = await readDatabase();
- //  console.log(`input:`, longUrl);
- // console.log(`db cache:`, data);
+   console.log(`input:`, longUrl);
+  console.log(`db cache:`, data);
 // enable caching, dont save the same entry multiple times
 //console.log(`data:`, data.urls[0].longUrl.url);
 
@@ -44,8 +44,13 @@ const saveUrl = async (longUrl: any): Promise<string> => {
     const longUrl2 = urlData.longUrl;
   //  console.log(`URL ${i + 1}: Short URL - ${shortUrl}, Long URL - ${longUrl2}, input: ${longUrl}`);
    // console.log(`raw url data:`, urlData);
-  //  console.log(`searching for: `, longUrl2 );
-   // console.log(`searching against: `, longUrl.url );
+   console.log(`searching for: `, longUrl2 );
+   console.log(`searching against: `, longUrl );
+   if (!longUrl.url){
+    if (longUrl2 == longUrl) {
+      return shortUrl;
+    }
+   }
     if (longUrl.url == longUrl2) {
    //    console.log(`found it!`);
       return shortUrl;
@@ -57,13 +62,17 @@ const saveUrl = async (longUrl: any): Promise<string> => {
 
 
   const shortUrl = shortid.generate();
-  // console.log(`saving url...`)
-  // console.log(`[saving url]saveUrl:`, shortUrl);
-  // console.log(`[saving url]longUrl:`, longUrl);
+   console.log(`saving url...`)
+  console.log(`[saving url]saveUrl:`, shortUrl);
+ console.log(`[saving url]longUrl:`, longUrl);
   const fullurldata = longUrl.url;
+  if (!fullurldata) {
+    data.urls.push({ shortUrl, longUrl: longUrl });
+  } else {
   data.urls.push({ shortUrl, longUrl: fullurldata });
+};
   await writeDatabase(data);
-  // console.log(`db write:`, data);
+  console.log(`db write:`, data);
   return shortUrl;
 };
 
