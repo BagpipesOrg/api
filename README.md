@@ -20,7 +20,7 @@ The format is `{storage_key, compressed_diagramdata}`
     
  Reset db:   
  ```shell
- echo "{nodes:[]}" > dist/src/api/urls2.json
+ echo "{urls:[]}" > dist/src/api/urls2.json
  ```
 
 
@@ -42,7 +42,9 @@ $ npm run api
 
 ### Info:  
 
-##### Path: `/scenario/info`;
+##### Path: `/scenario/info`;   
+Get information about a scenario.  
+
 ### Code:
 ```shell
 $ curl -X POST -H "Content-Type: application/json" -d '{"id": "Uvervffcw"}' http://localhost:8080/scenario/info
@@ -51,7 +53,8 @@ $ {"result":"assetHub > xTransfer > polkadot"}
 
 TODO
 
-##### Path: `/create/scenario`;
+##### Path: `/create/scenario`;   
+Create a new scenario.  
 ### Code:
 ```shell
 $ curl -X POST -H "Content-Type: application/json" -d '{"source_chain": "polkadot", "dest_chain": "hydraDx", "source_address": "your_source_address", "amount": 100, "assetid": 1}' http://localhost:8080/create/scenario
