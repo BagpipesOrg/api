@@ -20,7 +20,7 @@ The format is `{storage_key, compressed_diagramdata}`
     
  Reset db:   
  ```shell
- echo "{nodes:[]}" > dist/src/api/urls2.json
+ echo "{urls:[]}" > dist/src/api/urls2.json
  ```
 
 
