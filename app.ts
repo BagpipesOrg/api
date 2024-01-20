@@ -6,7 +6,9 @@ import { route_tx } from './src/api/txroute';
 import { inandoutchannels } from "./src/api/xcmhelper";
 import { saveUrl, getUrl } from "./src/api/handledb"
 import { broadcastToChain } from './src/api/broadcast';
-
+import { createWebhook } from './src/utils';
+import logger from './src/logger';
+import { decompressString, scenario_info, insert_scenario } from './src/scenarios/parse_db';
 const app = express();
 const port = 8080;
 
@@ -24,6 +26,7 @@ app.post('/polkadot/openchannels', async (req, res) => {
   res.json({ open_hrmp_channels: channels, sourcechain: paraid });
 });
 
+// tx broadcast
 // /broadcast input: {chain: 'hydradx', tx: ''}
 app.post('/broadcast', async (req, res) => {
   const chain = req.body.chain;
@@ -48,11 +51,17 @@ app.post('/broadcast', async (req, res) => {
 });
 
 
+// Save Scenario 
+//router.post('/save', verifyToken, async (req, res) => {
+
+// save data and generate storage key/short url key
 app.post('/saveUrl', async (req, res) => {
   const longUrl = req.body;
-
+ // console.log(`Saving `, longUrl);
   try {
+   // console.log(`saving it`);
     const shortUrl = await saveUrl(longUrl);
+  //  console.log(`after save shortUrl:`, shortUrl);
     res.json({ success: true, shortUrl });
   } catch (error) {
     console.error('Error saving URL:', error);
@@ -67,9 +76,10 @@ app.get('/', async (req, res) => {
 // Get URL
 app.get('/getUrl/:shortUrl', async (req, res) => {
   const { shortUrl }: { shortUrl: string } = req.params;
-
+console.log(`geturl`);
   try {
     const longUrl = await getUrl(shortUrl);
+    console.log(`getUrl: `, shortUrl);
     res.json({ success: true, longUrl });
   } catch (error) {
     console.error('Error getting URL:', error);
@@ -77,12 +87,105 @@ app.get('/getUrl/:shortUrl', async (req, res) => {
   }
 });
 
+function isValidChain(chain: string): boolean {
+  const validChains = ['polkadot', 'hydraDx', 'assetHub', 'interlay'];
+
+  return typeof chain === 'string' && validChains.includes(chain);
+}
+
+
+// curl -X POST -H "Content-Type: application/json" -d '{"source_chain": "polkadot", "dest_chain": "hydraDx", "source_address": "your_source_address", "amount": 100, "assetid": 1}' http://localhost:8080/create/scenario
+// {"result":"QWdI3KifK"}
 // create scenerio 
 app.post('/create/scenario', async ( req, res) => {
-  res.json({result: "function coming soon"});
-} )
 
-// tx broadcast
+  const source_chain: string = req.body.source_chain;
+  const dest_chain: string = req.body.dest_chain;
+  const source_address: string = req.body.source_address;
+  const amount: number = req.body.amount; 
+  const assetid: number = req.body.assetid;
+
+  // Validation checks
+  if (!isValidChain(source_chain)) {
+    return res.status(400).json({ error: 'Invalid source_chain provided.' });
+  }
+
+  if (!isValidChain(dest_chain)) {
+    return res.status(400).json({ error: 'Invalid dest_chain provided.' });
+  }
+
+
+
+  if (!source_chain || typeof source_chain !== 'string') {
+    return res.status(400).json({ error: 'Invalid source_chain provided.' });
+  }
+
+  if (!dest_chain || typeof dest_chain !== 'string') {
+    return res.status(400).json({ error: 'Invalid dest_chain provided.' });
+  }
+
+  if (!source_address || typeof source_address !== 'string') {
+    return res.status(400).json({ error: 'Invalid source_address provided.' });
+  }
+
+  if (isNaN(amount) || amount <= 0) {
+    return res.status(400).json({ error: 'Invalid amount provided.' });
+  }
+
+  if (isNaN(assetid) || assetid <= 0) {
+    return res.status(400).json({ error: 'Invalid assetid provided.' });
+  }
+
+  const shorturl = await insert_scenario(source_chain, dest_chain, source_address, amount, assetid);
+  console.log(`got the shorturl:` , shorturl);
+  
+  res.json({result: shorturl});
+} );
+
+
+// curl -X POST -H "Content-Type: application/json" -d '{"id": "scenario_id_here"}' http://localhost:8080/scenario/info
+// get info about a certain scenario
+app.post('/scenario/info', async (req, res) => {
+  const scenario_id = req.body.id;
+//  console.log(`scenario info`);
+  if (!scenario_id) {
+    return res.json({result: "No scenario id detected, provide a request like this: curl -X ENDPOINT/scenario/info -d {'id':'my scenario id here'}"});
+  };
+
+  const get_data = await getUrl(scenario_id);
+//  console.log(`get_data is:`, get_data);
+  const decoded = await decompressString(get_data);
+//  console.log(`decoded: `, decoded);
+  const out = await scenario_info(decoded);
+//  console.log(`out is:`, out);
+  if (!get_data) {
+    return res.json({result: "Could not find the scenario data"});
+  };
+
+
+  res.json({result: out})
+});
+
+// curl -X POST -H "Content-Type: application/json" http://localhost:8080/create/webhook
+app.post('/create/webhook', createWebhook);
+
+/*
+app.post('/create/webhook', async ( req, res) => {
+  res.json({result: "function coming soon"});
+} );
+*/
+
+
+
+/*
+/execute
+/createScenario
+router.get('/load/:_id', verifyToken, async (req, res) => {
+router.post('/stopExecution', verifyToken, async (req, res) => {
+router.post('/createWebhook', async (req, res) => {
+router.post('/receiveWebhook', async (req, res) => {
+*/
+
 
 // xcm asset transfer
 // call a scenerio - call a scenario you created in the UI - todo
@@ -115,6 +218,9 @@ app.post('/polkadot/xcm-native-transfer', (req, res) => {
   res.json({ receivedData: "todo" });
 });
 
+
+//
+// db info, display metadata about stored scenarios, amount and so on
 
 
 
