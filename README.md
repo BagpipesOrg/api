@@ -17,7 +17,11 @@
 ## DB:    
 Right now the API just use a simple key value inspired json file to store the diagram data, the file can be found at *dist/src/api/urls2.json*.   
 The format is `{storage_key, compressed_diagramdata}`  
- 
+    
+ Reset db:   
+ ```shell
+ echo "{nodes:[]}" > dist/src/api/urls2.json
+ ```
 
 
 ### Build:  
