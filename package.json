@@ -1,5 +1,5 @@
 {
-  "name": "xcmsend-api",
+  "name": "bagpipes-api",
   "version": "0.0.8",
   "description": "Bagpipes XCM api",
   "main": "index.js",
