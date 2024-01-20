@@ -102,7 +102,7 @@ export async function scenario_info(input: string) {
 
         for (const node of parsed.nodes) {
             if (node.type === 'chain') {
-              console.log(`Chain Name: ${node.formData?.chain}`);
+     //         console.log(`Chain Name: ${node.formData?.chain}`);
               chainList.push(node.formData.chain);
             } else if (node.type === 'action' && node.formData?.action) {
                 chainList.push(node.formData.action);
@@ -136,8 +136,8 @@ const action_node: Node = {
     id: "action_4f16b2",
     type: "action",
     position: {
-      "x": -5.6337570402485895,
-      "y": 211.98330575486636
+      x: -5.6337570402485895,
+      y: 211.98330575486636
     },
     data: {
       label: "action"
@@ -161,27 +161,41 @@ const action_node: Node = {
         }
       }
     },
-    "width": 200,
-    "height": 246,
-    "selected": true,
-    "positionAbsolute": {
-      "x": -5.6337570402485895,
-      "y": 211.98330575486636
+    width: 200,
+    height: 246,
+    selected: true,
+    positionAbsolute: {
+      x: -5.6337570402485895,
+      y: 211.98330575486636
     },
-    "dragging": false
+    dragging: false
   };
 
     const dest_node: Node =  {
-        id: 'Api_generated',
+        id: 'chain_dest_Api_generated',
         type: 'chain',
-        position: { x: 100, y: 100 }, // Set the desired position
-        data: { label: 'New Chain', image: './new_chain.svg', name: 'NewChain' },
+        position: {
+            "x": 804.2081077573107,
+            "y": 118.96131201636871
+          }, // Set the desired position
+        data: { label: 'Chain', image: './chain.svg', name: 'Chain' },
         style: {},
-        formData: { chain: 'newChain', asset: { name: 'NewAsset', assetId: assetid }, address: 'newAddress', amount: amount.toString(), delay: null, contact: null },
-        width: 200,
-        height: 300,
+        formData: 
+        { 
+            chain: dest_chain, 
+            asset: { name: '', assetId: assetid }, 
+            address: '5HdRaUshTGoQFatoJ7Wg9Skg7BLCjfJaV5V9qYNoqR7zfX5B', 
+            amount: amount.toString(), 
+            delay: null, 
+            contact: null 
+        },
+        width: 244,
+        height: 441,
         selected: false,
-        positionAbsolute: { x: 100, y: 100 },
+        positionAbsolute: {
+            x: 804.2081077573107,
+            y: 118.96131201636871
+          },
         dragging: false,
       };
       const object: Graph = {
@@ -193,8 +207,10 @@ const action_node: Node = {
         edges: []
       };
 
-
-      const short_url = compressString(JSON.stringify(object));
+      const outen: string = JSON.stringify(object);
+    //  console.log(`output: `, outen);
+      const short_url = await compressString(outen);
+   //   console.log(`compressed string: `, short_url);
 
 
       return short_url;
@@ -213,7 +229,7 @@ export async function decompressString(compressedInput: string): Promise<string>
        // Ensure that the base64 string is properly formatted
        const formattedInput = in2.replace(/[^A-Za-z0-9+/]/g, '');
  
-       console.log('Formatted Input:', formattedInput);
+      // console.log('Formatted Input:', formattedInput);
  
        const uint8Array = new Uint8Array(
          atob(formattedInput)
@@ -234,17 +250,17 @@ export async function decompressString(compressedInput: string): Promise<string>
 
 
    export async function compressString(input: string): Promise<string> {
-    console.log(`compressing string`)
+  //  console.log(`compressing string`)
     try {
       const utf8encoded = new TextEncoder().encode(input);
       const compressed = pako.deflate(utf8encoded);
       const base64encoded = btoa(String.fromCharCode.apply(null, compressed));
   
-      console.log('Base64 Encoded:', base64encoded);
+    //  console.log('Base64 Encoded:', base64encoded);
   
       
       const shortUrl = await saveUrl(base64encoded);
-      console.log('saved link: ', shortUrl);
+ //     console.log('saved link: ', shortUrl);
   
       return shortUrl;
     } catch (error) {

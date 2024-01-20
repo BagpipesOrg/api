@@ -147,17 +147,17 @@ app.post('/create/scenario', async ( req, res) => {
 // get info about a certain scenario
 app.post('/scenario/info', async (req, res) => {
   const scenario_id = req.body.id;
-  console.log(`scenario info`);
+//  console.log(`scenario info`);
   if (!scenario_id) {
     return res.json({result: "No scenario id detected, provide a request like this: curl -X ENDPOINT/scenario/info -d {'id':'my scenario id here'}"});
   };
 
   const get_data = await getUrl(scenario_id);
-  console.log(`get_data is:`, get_data);
+//  console.log(`get_data is:`, get_data);
   const decoded = await decompressString(get_data);
-  console.log(`decoded: `, decoded);
+//  console.log(`decoded: `, decoded);
   const out = await scenario_info(decoded);
-  console.log(`out is:`, out);
+//  console.log(`out is:`, out);
   if (!get_data) {
     return res.json({result: "Could not find the scenario data"});
   };
