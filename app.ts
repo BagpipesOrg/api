@@ -9,6 +9,11 @@ import { broadcastToChain } from './src/api/broadcast';
 import { createWebhook } from './src/utils';
 import logger from './src/logger';
 import { decompressString, scenario_info, insert_scenario } from './src/scenarios/parse_db';
+import { memoryCache } from './src/api/cache'; // Import memoryCache from cache.ts
+
+
+
+
 const app = express();
 const port = 8080;
 
