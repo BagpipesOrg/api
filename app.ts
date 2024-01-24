@@ -6,9 +6,10 @@ import { route_tx } from './src/api/txroute';
 import { inandoutchannels } from "./src/api/xcmhelper";
 import { saveUrl, getUrl } from "./src/api/handledb"
 import { broadcastToChain } from './src/api/broadcast';
+import { isValidChain } from './src/api/Chains';
 import { createWebhook } from './src/utils';
 import logger from './src/logger';
-import { decompressString, scenario_info, insert_scenario } from './src/scenarios/parse_db';
+import { decompressString, scenario_info, insert_scenario, scenario_detailed_info } from './src/scenarios/parse_db';
 const app = express();
 const port = 8080;
 
@@ -57,7 +58,7 @@ app.post('/broadcast', async (req, res) => {
 // save data and generate storage key/short url key
 app.post('/saveUrl', async (req, res) => {
   const longUrl = req.body;
- // console.log(`Saving `, longUrl);
+  //console.log(`Saving `, longUrl);
   try {
    // console.log(`saving it`);
     const shortUrl = await saveUrl(longUrl);
@@ -87,11 +88,6 @@ console.log(`geturl`);
   }
 });
 
-function isValidChain(chain: string): boolean {
-  const validChains = ['polkadot', 'hydraDx', 'assetHub', 'interlay'];
-
-  return typeof chain === 'string' && validChains.includes(chain);
-}
 
 
 // curl -X POST -H "Content-Type: application/json" -d '{"source_chain": "polkadot", "dest_chain": "hydraDx", "source_address": "your_source_address", "amount": 100, "assetid": 1}' http://localhost:8080/create/scenario
@@ -153,17 +149,64 @@ app.post('/scenario/info', async (req, res) => {
   };
 
   const get_data = await getUrl(scenario_id);
+    if (!get_data) {
+    return res.json({result: "Could not find the scenario data"});
+  };
+
 //  console.log(`get_data is:`, get_data);
   const decoded = await decompressString(get_data);
 //  console.log(`decoded: `, decoded);
   const out = await scenario_info(decoded);
 //  console.log(`out is:`, out);
-  if (!get_data) {
-    return res.json({result: "Could not find the scenario data"});
-  };
 
 
   res.json({result: out})
+});
+
+/*
+Provide a vector of output [ node0_info, node1_info, node1 ]
+*/
+// display full scenario info
+app.post('/scenario/info/full', async (req, res) => {
+
+  const output = {
+    tx: '',
+    summary: '',
+    asset: '',
+    amount: '',
+    txtype: ''
+  }
+
+  const scenario_id = req.body.id;
+
+
+  if (!scenario_id) {
+    return res.json({result: "No scenario id detected, provide a request like this: curl -X ENDPOINT/scenario/info -d {'id':'my scenario id here'}"});
+  };
+  try {
+    const get_data = await getUrl(scenario_id);
+    if (!get_data) {
+      return res.json({result: "Could not find the scenario data"});
+    };
+    //  console.log(`get_data is:`, get_data);
+      const decoded = await decompressString(get_data);
+    console.log(`decoded: `, decoded);
+    const deep_coded = await scenario_detailed_info(JSON.parse(decoded));
+   // console.log(`deep info:`, deep_coded);
+      const out = await scenario_info(decoded);
+      output['summary'] = out;
+      output['txtype'] = deep_coded.tx_type;
+      output['amount'] = deep_coded.source_amount;
+      output['asset'] = deep_coded.source_asset;
+      console.log(`output is:`, output);
+   } catch (error) {
+    console.log(`got error:`, error);
+    return res.json({error: "Invalid scenario id"});
+  }
+
+  console.log(`output is:`, output);
+
+  res.json({result: output})
 });
 
 // curl -X POST -H "Content-Type: application/json" http://localhost:8080/create/webhook

@@ -11,13 +11,18 @@ const endpoints = {
         assetHub: "wss://statemint-rpc.dwellir.com",
         hydraDx: "wss://hydradx-rpc.dwellir.com",
         polkadex: "wss://polkadex-parachain.public.curie.radiumblock.co/ws",
+        interlay: "wss://interlay-rpc.dwellir.com",
+   
     },
-    hydradx: {
-
-    },
-    assetHub: {
-    
+    kusama: {
+        default: "wss://kusama-rpc.dwellir.com", 
+        assetHub: "wss://sys.ibp.network/statemine",
+        hydraDx: "wss://hydradx-rpc.dwellir.com",
+        turing: "wss://turing-rpc.dwellir.com",
+        kabocha: "wss://kabocha.jelliedowl.net",
+        mangata: "wss://kusama-rpc.mangata.online"
     }
+
 };
 
 // Function to update endpoints if needed (placeholder for now)
