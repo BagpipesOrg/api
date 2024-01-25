@@ -6,7 +6,8 @@
   "scripts": {
     "buildme": "cp .env.example .env && npm install && tsc",
     "api": "node dist/app.js",
-    "test": "ts-node src/api/tests.ts"
+    "test": "ts-node src/api/tests.ts",
+    "resetdb": "sh resetdb.sh"
   },
   "repository": {
     "type": "git",
