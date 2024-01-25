@@ -136,9 +136,12 @@ export async function scenario_detailed_info(scenario_data: Graph){
   const output = {
     source_asset: "",
     source_amount: "",
+    source_chain: "",
     tx_type: "",
     dest_asset: "",
-    dest_amount: ""
+    dest_amount: "",
+    dest_chain: '',
+    dest_address: ""
   };
 
 
@@ -154,6 +157,7 @@ export async function scenario_detailed_info(scenario_data: Graph){
   output['dest_asset'] = destnode.formData.asset.assetId.toString();
   output['dest_amount'] = destnode.formData.amount;
 */
+  const addresses: string[] = [];
 
   for (const node of scenario_data.nodes) {
       if (node.type === 'chain') {
@@ -161,17 +165,33 @@ export async function scenario_detailed_info(scenario_data: Graph){
         chainList.push(node.formData.chain);
         amounts.push(node.formData.asset.assetId.toString());
         assets.push(node.formData.asset.assetId.toString());
+        
+        addresses.push(node.formData.address)
+
       } else if (node.type === 'action' && node.formData?.action) {
           output['tx_type'] = node.formData.actionData.actionType;
-          console.log(`action node`, node.formData);
+    //      console.log(`action node`, node.formData);
           output['source_amount'] = node.formData.actionData.source.amount;
           output['source_asset'] = node.formData.actionData.source.assetId.toString();
+          if (node.formData.actionData) {
+        //    console.log(`node.formData.actionData is true:`, node.formData.actionData);
+            addresses.push(node.formData.actionData.target.address);
+            const schain = node.formData.actionData.source.chain;
+            const dchain = node.formData.actionData.target.chain;
+            if (schain) {
+                output['source_chain'] = schain;
+            }
+            if (dchain) {
+                output['dest_chain'] = dchain;
+            }
+        };
         }
     }
    // output['source_asset'] = assets[0];
   //  output['source_amount'] = amounts[0];
     output['dest_asset'] = assets[1];
     output['dest_amount'] =  amounts[1];
+    output['dest_address'] =  addresses[1];
     return output;
 }
 

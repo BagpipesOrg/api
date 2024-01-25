@@ -167,14 +167,17 @@ app.post('/scenario/info', async (req, res) => {
 Provide a vector of output [ node0_info, node1_info, node1 ]
 */
 // display full scenario info
+// curl -X POST -H "Content-Type: application/json" -d '{"id": "a-aPVjoub"}' http://localhost:8080/scenario/info/full
 app.post('/scenario/info/full', async (req, res) => {
 
   const output = {
-    tx: '',
-    summary: '',
-    asset: '',
-    amount: '',
-    txtype: ''
+    tx: 'could not find',
+    summary: 'could not find',
+    asset: 'could not find',
+    amount: 'could not find',
+    source_chain: 'could not find',
+    dest_chain: 'could not find',
+    txtype: 'could not find'
   }
 
   const scenario_id = req.body.id;
@@ -192,15 +195,25 @@ app.post('/scenario/info/full', async (req, res) => {
       const decoded = await decompressString(get_data);
     console.log(`decoded: `, decoded);
     const deep_coded = await scenario_detailed_info(JSON.parse(decoded));
-   // console.log(`deep info:`, deep_coded);
-      const out = await scenario_info(decoded);
-      output['summary'] = out;
+    console.log(`deep info:`, deep_coded);
+    //  const out = await scenario_info(decoded);
+      output['summary'] = deep_coded.source_chain + " > " + deep_coded.tx_type + " > " + deep_coded.dest_chain;
       output['txtype'] = deep_coded.tx_type;
       output['amount'] = deep_coded.source_amount;
       output['asset'] = deep_coded.source_asset;
+      output['dest_chain'] = deep_coded.dest_chain;
+      output['source_chain'] = deep_coded.source_chain;
       console.log(`output is:`, output);
+   //   const tx = await route_tx(sourchain, destchain, output['asset'], output['amount'], destinationaddress);
+    console.log(`source chain: `, deep_coded.source_chain);
+    console.log(`dest chain: `, deep_coded.dest_chain);
+    console.log(`dest address: `, deep_coded.dest_address);
+    const tx = await route_tx(deep_coded.source_chain, deep_coded.dest_chain, parseFloat(output['asset']), parseFloat(output['amount']), deep_coded.dest_address);
+    console.log(`tx is: `, tx.toHex());
+    output['tx'] = tx.toHex();
    } catch (error) {
     console.log(`got error:`, error);
+
     return res.json({error: "Invalid scenario id"});
   }
 
