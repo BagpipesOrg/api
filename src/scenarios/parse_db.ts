@@ -114,6 +114,87 @@ export async function scenario_info(input: string) {
         return formattedChainList;
 }
 
+
+
+/*
+be able to provide an output like this: 
+  const output = {
+    tx: '',
+    summary: '',
+    asset: '',
+    amount: '',
+    txtype: ''
+  }
+
+*/
+export async function scenario_detailed_info(scenario_data: Graph){
+
+  const source_asset = '';
+  const source_amount = '';
+  const tx_type = '';
+
+  const output = {
+    source_asset: "",
+    source_amount: "",
+    source_chain: "",
+    tx_type: "",
+    dest_asset: "",
+    dest_amount: "",
+    dest_chain: '',
+    dest_address: ""
+  };
+
+
+  const chainList: string[] = [];
+  const amounts: string[] = [];
+  const assets: string[] = [];
+  /*
+  const infolist = scenario_data.nodes.entries();
+  const sourcenode: Node = infolist[0];
+  const destnode: Node = infolist[2];
+  output['source_asset'] = sourcenode.formData.asset.assetId.toString();
+  output['source_amount'] = sourcenode.formData.amount;
+  output['dest_asset'] = destnode.formData.asset.assetId.toString();
+  output['dest_amount'] = destnode.formData.amount;
+*/
+  const addresses: string[] = [];
+
+  for (const node of scenario_data.nodes) {
+      if (node.type === 'chain') {
+//         console.log(`Chain Name: ${node.formData?.chain}`);
+        chainList.push(node.formData.chain);
+        amounts.push(node.formData.asset.assetId.toString());
+        assets.push(node.formData.asset.assetId.toString());
+        
+        addresses.push(node.formData.address)
+
+      } else if (node.type === 'action' && node.formData?.action) {
+          output['tx_type'] = node.formData.actionData.actionType;
+    //      console.log(`action node`, node.formData);
+          output['source_amount'] = node.formData.actionData.source.amount;
+          output['source_asset'] = node.formData.actionData.source.assetId.toString();
+          if (node.formData.actionData) {
+        //    console.log(`node.formData.actionData is true:`, node.formData.actionData);
+            addresses.push(node.formData.actionData.target.address);
+            const schain = node.formData.actionData.source.chain;
+            const dchain = node.formData.actionData.target.chain;
+            if (schain) {
+                output['source_chain'] = schain;
+            }
+            if (dchain) {
+                output['dest_chain'] = dchain;
+            }
+        };
+        }
+    }
+   // output['source_asset'] = assets[0];
+  //  output['source_amount'] = amounts[0];
+    output['dest_asset'] = assets[1];
+    output['dest_amount'] =  amounts[1];
+    output['dest_address'] =  addresses[1];
+    return output;
+}
+
 // insert a new scenario, store it in the db and generate a link to it
 export async function insert_scenario(source_chain: string, dest_chain: string, source_address: string, amount: number, assetid: number): Promise<any> {
 

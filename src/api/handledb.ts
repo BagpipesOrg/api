@@ -115,7 +115,7 @@ const urlList = { urls: [] };
   const shortUrl = shortid.generate();
   memoryCache[shortUrl] = longUrl.url;
   for (const [key, value] of Object.entries(memoryCache)) {
-    urlList.urls.push({ shorturl: key, longurl: value });
+    urlList.urls.push({ shortUrl: key, longUrl: value });
   }
  //  console.log('writing:', urlList)
  //  console.log(`saving url...`)
@@ -141,8 +141,21 @@ await writeDatabase(urlList);
 export function get_all_keys() {}
 
 const getUrl = async (shortUrl: string): Promise<string | null> => {
+  for (const key in memoryCache) {
+    if (memoryCache.hasOwnProperty(key)) {
+      const value = memoryCache[key];
+      if (key == shortUrl) {
+       //  console.log(`found it`);
+       const outme = { shortUrl: key, longUrl: value};
+        return outme.longUrl;
+      }
+   //   console.log(`Key: ${key}, Value: ${value}`);
+    }
+  }
+
+
   const data = await readDatabase();
- /*
+  console.log(`get data:`, data);
   console.log(`get url called!`);
   console.log(`geturl input: `, shortUrl);
   data.urls.forEach((urlData: UrlData) => {
@@ -150,9 +163,9 @@ const getUrl = async (shortUrl: string): Promise<string | null> => {
     console.log(`Long URL: ${urlData.longUrl}`);
     console.log("------");
   });
-  */
+ // */
   const urlMapping = data.urls.find((url) => url.shortUrl === shortUrl);
- // console.log(`url mapping is:`, urlMapping);
+  console.log(`url mapping is:`, urlMapping);
   return urlMapping ? urlMapping.longUrl : null;
 };
 

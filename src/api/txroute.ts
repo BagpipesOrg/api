@@ -1,10 +1,10 @@
-import { dotToHydraDx, hydraDxToParachain, polkadot_to_assethub, assethub_to_parachain, assethub_to_hydra } from './DraftTx';
+import { dotToHydraDx, assethub2interlay, hydraDxToParachain, polkadot_to_assethub, assethub_to_parachain, assethub_to_hydra } from './DraftTx';
 
 
 /// spit out a tx
 /// input: source chain, dest chain, assetid, amount
 export async function route_tx(source_chain: string, dest_chain: string, assetid: number, amount: number, destinationaddress: string) {
-    console.log(`route_tx start`);
+    // console.log(`route_tx start`);
     // todo lowercase it
     const sourcechain = source_chain.toLowerCase();
     const destchain = dest_chain.toLowerCase();
@@ -34,7 +34,11 @@ export async function route_tx(source_chain: string, dest_chain: string, assetid
           console.log("handleTransfer for AssetHub to Polkadot...");
           const paraid3 = 0;
           return assethub_to_parachain(assetid.toString(), amount, destinationaddress, paraid3);
-    
+
+        case 'assethub:interlay':
+          console.log(`assethub 2 interlay`)
+          return assethub2interlay(assetid, amount, destinationaddress);
+
         case 'assethub:hydradx':
           console.log("handleTransfer for AssetHub to HydraDx...");
           return assethub_to_hydra(assetid, amount, destinationaddress);
