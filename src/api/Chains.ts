@@ -19,6 +19,13 @@ interface AssetInfo {
     }
   
 
+export function isValidChain(chain: string): boolean {
+      const validChains = ['polkadot', 'hydraDx', 'assetHub', 'interlay'];
+    
+      return typeof chain === 'string' && validChains.includes(chain);
+    }
+    
+
 export function listChains() {
     // dict[paraid] = ChainInfo
     const chainList: Record<number, ChainInfo> = {};
@@ -56,6 +63,19 @@ export function listChains() {
       };
       chainList[1000] = assethub;
 
+
+      const interlay: ChainInfo = {
+        name: "interlay",
+        display: "Interlay Polkadot",
+        ws_endpoint: endpoints.polkadot.interlay,
+        paraid: 2032,
+        prefix: 2032,
+        token_decimals: 10, //INTR 
+        logo: '/chains/interlay.svg'
+    };
+      chainList[2032] = interlay;
+
+
       const rococo: ChainInfo = {
         name: 'rococo',
         display: 'Rococo',
@@ -75,6 +95,7 @@ export enum supported_Polkadot_Chains {
   polkadot,
   hydradx,
   assethub,
+  interlay
 }
 
 /// send the 90% of the dot to be converted to USDT, the rest will be sent 
@@ -108,6 +129,16 @@ export const CHAIN_METADATA = {
         nativeAccount: true,
 
     },
+    interlay: {
+      chain: "interlay",
+      endpoints: [
+          "wss://rpc-interlay.luckyfriday.io",
+          "wss://interlay-rpc.dwellir.com",
+      ],
+      queryAssetPaths: ["assetRegistry.metadata"],  
+      queryBalancePaths: ["system.account"],
+      nativeAccount: true,
+  },
     assetHub: {
         chain: "AssetHub",
         endpoints: [

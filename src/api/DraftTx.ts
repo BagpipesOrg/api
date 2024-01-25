@@ -33,6 +33,68 @@ function getRawAddress(ss58Address: string): Uint8Array {
         throw new Error("Invalid SS58 address format.");
     }
 }
+function number_to_string(input: number): number {
+	// 	console.log(`number_to_string: `, input);
+		const numberWithCommas = input.toString();
+		const numberWithNoCommas = numberWithCommas.replace(/,/g, ''); // Remove the commas
+	// 	console.log(`number_to_string numberWithNoCommas: `, numberWithNoCommas);
+	// Using parseInt to convert to an integer
+		const integerNumber = parseInt(numberWithNoCommas, 10); // The second argument (10) specifies the base (decimal) for parsing.
+	// 	console.log(`number_to_string integerNumber: `, integerNumber);
+	
+		return integerNumber;
+	}
+	
+
+
+// https://assethub-polkadot.subscan.io/extrinsic/4929110-2
+export async function assethub2interlay(assetid: number, amount: number, destaccount: string){
+	const paraid = 2032;
+	const api = await connectToWsEndpoint('polkadot');
+	const accountido = raw_address_now(destaccount);
+//	console.log(`assetid:`, assetid);
+// remove commas in assetid
+	
+// 
+
+	const destination = {
+		parents: 1,
+		interior: { X1: { Parachain: paraid } },
+	};
+
+	const account = {
+		parents: 0,
+		interior: { X1: { AccountId32: { id: accountido, network: null } } },
+	};
+
+	const asset = {
+		id: {
+			Concrete: {
+				parents: 0,
+				interior: {
+					X2: [
+						{ PalletInstance: 50 },
+						{ GeneralIndex: number_to_string(assetid).toString() },
+					],
+				},
+			},
+		},
+		fun: { Fungible: number_to_string(amount).toString() },
+
+	};
+
+	//console.log(`asset: `, asset);
+
+	const tx = api.tx.polkadotXcm.limitedReserveTransferAssets(
+		{ V2: destination },
+		{ V2: account },
+		{ V2: [asset] },
+		0,
+		{ Unlimited: null }
+	);
+
+		return tx;
+}
 
 
 // working: https://polkadot.subscan.io/xcm_message/polkadot-6cff92a4178a7bf397617201e13f00c4da124981
