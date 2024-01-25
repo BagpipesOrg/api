@@ -161,20 +161,21 @@ export async function scenario_detailed_info(scenario_data: Graph){
 
   for (const node of scenario_data.nodes) {
       if (node.type === 'chain') {
-//         console.log(`Chain Name: ${node.formData?.chain}`);
+         console.log(`Chain Name: ${node.formData?.chain}`);
         chainList.push(node.formData.chain);
-        amounts.push(node.formData.asset.assetId.toString());
-        assets.push(node.formData.asset.assetId.toString());
-        
+    //    amounts.push(node.formData.asset.assetId.toString());
+        if (node.formData.asset.assetId){
+    assets.push(node.formData.asset.assetId.toString());
+  }
         addresses.push(node.formData.address)
 
       } else if (node.type === 'action' && node.formData?.action) {
           output['tx_type'] = node.formData.actionData.actionType;
-    //      console.log(`action node`, node.formData);
+          console.log(`action node`, node.formData);
           output['source_amount'] = node.formData.actionData.source.amount;
           output['source_asset'] = node.formData.actionData.source.assetId.toString();
           if (node.formData.actionData) {
-        //    console.log(`node.formData.actionData is true:`, node.formData.actionData);
+            console.log(`node.formData.actionData is true:`, node.formData.actionData);
             addresses.push(node.formData.actionData.target.address);
             const schain = node.formData.actionData.source.chain;
             const dchain = node.formData.actionData.target.chain;
@@ -190,7 +191,7 @@ export async function scenario_detailed_info(scenario_data: Graph){
    // output['source_asset'] = assets[0];
   //  output['source_amount'] = amounts[0];
     output['dest_asset'] = assets[1];
-    output['dest_amount'] =  amounts[1];
+    //output['dest_amount'] =  amounts[1];
     output['dest_address'] =  addresses[1];
     return output;
 }
