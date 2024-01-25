@@ -211,9 +211,14 @@ app.post('/scenario/info/full', async (req, res) => {
  //    console.log(`source chain: `, deep_coded.source_chain);
  //    console.log(`dest chain: `, deep_coded.dest_chain);
   //   console.log(`dest address: `, deep_coded.dest_address);
+   try {
     const tx = await route_tx(deep_coded.source_chain, deep_coded.dest_chain, parseFloat(output['asset']), parseFloat(output['amount']), deep_coded.dest_address);
-  //   console.log(`tx is: `, tx.toHex());
-    output['tx'] = tx.toHex();
+    //   console.log(`tx is: `, tx.toHex());
+      output['tx'] = tx.toHex();
+   } catch (error) {
+    output['tx'] = "could not generate tx"
+   };
+
    } catch (error) {
     console.log(`got error:`, error);
 
