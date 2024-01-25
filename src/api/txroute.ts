@@ -4,7 +4,7 @@ import { dotToHydraDx, assethub2interlay, hydraDxToParachain, polkadot_to_asseth
 /// spit out a tx
 /// input: source chain, dest chain, assetid, amount
 export async function route_tx(source_chain: string, dest_chain: string, assetid: number, amount: number, destinationaddress: string) {
-    console.log(`route_tx start`);
+    // console.log(`route_tx start`);
     // todo lowercase it
     const sourcechain = source_chain.toLowerCase();
     const destchain = dest_chain.toLowerCase();

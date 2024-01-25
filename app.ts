@@ -42,7 +42,7 @@ app.post('/broadcast', async (req, res) => {
 
   try {
     const myhash = await broadcastToChain(chain, txdata);
-    console.log(`myhash:`, myhash.toString());
+  //   console.log(`myhash:`, myhash.toString());
     res.json({ status: "broadcasted", "hash": myhash });
   } catch (error) {
     console.error("Error while broadcasting to the chain:", error);
@@ -77,10 +77,10 @@ app.get('/', async (req, res) => {
 // Get URL
 app.get('/getUrl/:shortUrl', async (req, res) => {
   const { shortUrl }: { shortUrl: string } = req.params;
-console.log(`geturl`);
+// console.log(`geturl`);
   try {
     const longUrl = await getUrl(shortUrl);
-    console.log(`getUrl: `, shortUrl);
+  //   console.log(`getUrl: `, shortUrl);
     res.json({ success: true, longUrl });
   } catch (error) {
     console.error('Error getting URL:', error);
@@ -193,9 +193,9 @@ app.post('/scenario/info/full', async (req, res) => {
     };
     //  console.log(`get_data is:`, get_data);
       const decoded = await decompressString(get_data);
-    console.log(`decoded: `, decoded);
+  //   console.log(`decoded: `, decoded);
     const deep_coded = await scenario_detailed_info(JSON.parse(decoded));
-    console.log(`deep info:`, deep_coded);
+  //   console.log(`deep info:`, deep_coded);
     //  const out = await scenario_info(decoded);
       output['summary'] = deep_coded.source_chain + " > " + deep_coded.tx_type + " > " + deep_coded.dest_chain;
       output['txtype'] = deep_coded.tx_type;
@@ -203,13 +203,13 @@ app.post('/scenario/info/full', async (req, res) => {
       output['asset'] = deep_coded.source_asset;
       output['dest_chain'] = deep_coded.dest_chain;
       output['source_chain'] = deep_coded.source_chain;
-      console.log(`output is:`, output);
+  //     console.log(`output is:`, output);
    //   const tx = await route_tx(sourchain, destchain, output['asset'], output['amount'], destinationaddress);
-    console.log(`source chain: `, deep_coded.source_chain);
-    console.log(`dest chain: `, deep_coded.dest_chain);
-    console.log(`dest address: `, deep_coded.dest_address);
+ //    console.log(`source chain: `, deep_coded.source_chain);
+ //    console.log(`dest chain: `, deep_coded.dest_chain);
+  //   console.log(`dest address: `, deep_coded.dest_address);
     const tx = await route_tx(deep_coded.source_chain, deep_coded.dest_chain, parseFloat(output['asset']), parseFloat(output['amount']), deep_coded.dest_address);
-    console.log(`tx is: `, tx.toHex());
+  //   console.log(`tx is: `, tx.toHex());
     output['tx'] = tx.toHex();
    } catch (error) {
     console.log(`got error:`, error);
@@ -217,7 +217,7 @@ app.post('/scenario/info/full', async (req, res) => {
     return res.json({error: "Invalid scenario id"});
   }
 
-  console.log(`output is:`, output);
+  // console.log(`output is:`, output);
 
   res.json({result: output})
 });
