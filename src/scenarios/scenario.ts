@@ -36,7 +36,16 @@ interface ChainNode {
   dragging: boolean;
 }
 
-
+export interface scenario_summary {
+  source_chain: string, // source chain
+  source_address: string // senders address 
+  dest_chain: string, // destination chain
+  dest_address: string, // destination address 
+  assetid: string | number, 
+  amount: string | number, // transfer amount  
+  txtype: string, // would be enum in rust.. 
+  tx: string
+}
 
 
 export function validateDiagramData(diagramData: any): any { //DiagramData

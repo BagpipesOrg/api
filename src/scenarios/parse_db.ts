@@ -1,6 +1,8 @@
 // parse urls.json link db
 
 import { getUrl, saveUrl } from "../api/handledb";
+import { scenario_summary } from "./scenario";
+
 
 import * as pako from 'pako';
 
@@ -115,6 +117,50 @@ export async function scenario_info(input: string) {
 }
 
 
+// multi hop/scenario tx's
+export function multi_scenario_info(scenario_data: Graph): scenario_summary[] {
+  const alles: scenario_summary[] = [];
+
+  for (const node of scenario_data.nodes) {
+    const tmp_scenario: scenario_summary = {
+      source_chain: "not set",
+      source_address: "not set", 
+      dest_chain: "not set", 
+      dest_address: "not set", 
+      assetid: 0, 
+      amount: 0, 
+      txtype: "not set", 
+      tx: "not set"
+    };
+    if (node.type === 'action' && node.formData?.action) {
+        tmp_scenario['txtype'] = node.formData.actionData.actionType;
+        console.log(`action node`, node.formData);
+        tmp_scenario['source_amount'] = node.formData.actionData.source.amount;
+        tmp_scenario['assetid'] = node.formData.actionData.source.assetId;
+        tmp_scenario['amount'] = node.formData.actionData.source.amount;
+        if (node.formData.actionData) {
+          console.log(`node.formData.actionData is true:`, node.formData.actionData);
+          tmp_scenario['source_address'] = node.formData.actionData.source.address;
+          tmp_scenario['dest_address'] = node.formData.actionData.target.address;
+
+          const schain = node.formData.actionData.source.chain;
+          const dchain = node.formData.actionData.target.chain;
+          if (schain) {
+            tmp_scenario['source_chain'] = schain;
+          }
+          if (dchain) {
+            tmp_scenario['dest_chain'] = dchain;
+          }
+      };
+      alles.push(tmp_scenario);
+      }
+
+   
+  }
+
+  return alles;
+}
+
 
 /*
 be able to provide an output like this: 
@@ -125,7 +171,7 @@ be able to provide an output like this:
     amount: '',
     txtype: ''
   }
-
+This only supports single action scenarios
 */
 export async function scenario_detailed_info(scenario_data: Graph){
 

@@ -9,7 +9,7 @@ import { broadcastToChain } from './src/api/broadcast';
 import { isValidChain } from './src/api/Chains';
 import { createWebhook } from './src/utils';
 import logger from './src/logger';
-import { decompressString, scenario_info, insert_scenario, scenario_detailed_info } from './src/scenarios/parse_db';
+import { decompressString, scenario_info, insert_scenario, scenario_detailed_info, multi_scenario_info } from './src/scenarios/parse_db';
 
 
 const app = express();
@@ -230,6 +230,26 @@ app.post('/scenario/info/full', async (req, res) => {
   res.json({result: output})
 });
 
+// curl -X POST -H "Content-Type: application/json" -d '{"id": "frb-UXJuK"}' http://localhost:8080/scenario/info/multi
+// sample output: {"result":{"scenarios":[{"source_chain":"polkadot","source_address":"5HdRaUshTGoQFatoJ7Wg9Skg7BLCjfJaV5V9qYNoqR7zfX5B","dest_chain":"assetHub","dest_address":"5HdRaUshTGoQFatoJ7Wg9Skg7BLCjfJaV5V9qYNoqR7zfX5B","assetid":0,"amount":"13","txtype":"xTransfer","tx":"not set","source_amount":"13"},{"source_chain":"assetHub","source_address":"5HdRaUshTGoQFatoJ7Wg9Skg7BLCjfJaV5V9qYNoqR7zfX5B","dest_chain":"polkadot","dest_address":"5HdRaUshTGoQFatoJ7Wg9Skg7BLCjfJaV5V9qYNoqR7zfX5B","assetid":"3","amount":"3","txtype":"xTransfer","tx":"not set","source_amount":"3"},{"source_chain":"polkadot","source_address":"5HdRaUshTGoQFatoJ7Wg9Skg7BLCjfJaV5V9qYNoqR7zfX5B","dest_chain":"assetHub","dest_address":"5HdRaUshTGoQFatoJ7Wg9Skg7BLCjfJaV5V9qYNoqR7zfX5B","assetid":0,"amount":"1","txtype":"xTransfer","tx":"not set","source_amount":"1"}]}}
+// parse multiscenario, action node only
+app.post('/scenario/info/multi', async (req, res) => {
+  const scenario_id = req.body.id;
+
+  if (!scenario_id) {
+    return res.json({result: "No scenario id detected, provide a request like this: curl -X ENDPOINT/scenario/info -d {'id':'my scenario id here'}"});
+  };
+  const get_data = await getUrl(scenario_id);
+  if (!get_data) {
+    return res.json({result: "Could not find the scenario data"});
+  };
+  const decoded = await decompressString(get_data);
+  //   console.log(`decoded: `, decoded);
+    const multisdaat = multi_scenario_info(JSON.parse(decoded));
+  //  console.log(`multisdaat:`, multisdaat);
+  //  console.log(`multisdaat done`);
+  return res.json({result: {"scenarios":multisdaat} });
+});
 // curl -X POST -H "Content-Type: application/json" http://localhost:8080/create/webhook
 app.post('/create/webhook', createWebhook);
 
