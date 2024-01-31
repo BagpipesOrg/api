@@ -103,9 +103,8 @@ export async function assethub2interlay(assetid: number, amount: number, destacc
 export async function polkadot_to_assethub(amount: number, address: string) {
 	const api = await connectToWsEndpoint('polkadot');
 	const paraid = 1000;
-  const accountId = api.createType("AccountId32", address).toHex();
-//	const infoblob = api.consts.system.version.toHuman();
-//	console.log(`infoblob:`,  infoblob);
+    const accountId = api.createType("AccountId32", address).toHex();
+
 	//console.log(`Connected to assethub`);
 	const destination = {
 		parents: 0,
@@ -125,7 +124,7 @@ export async function polkadot_to_assethub(amount: number, address: string) {
 	];
 
 
-	const tx = await api.tx.xcmPallet.limitedTeleportAssets(
+	const tx = api.tx.xcmPallet.limitedTeleportAssets(
 		{ V3: destination },
 		{ V3: account	 },
 		{ V3: asset },
@@ -133,6 +132,8 @@ export async function polkadot_to_assethub(amount: number, address: string) {
 		{ Unlimited: 0 },
 
 	);
+
+
 
 	return tx;
 }
@@ -320,6 +321,44 @@ function uint8ArrayToHex(uint8Array: Uint8Array): string {
 	return hex;
   }
 
+  // works: https://assethub-polkadot.subscan.io/xcm_message/polkadot-b987dc6756fcb830746ef5fd6d40344a78f8d1f3
+export async function assethub_to_polkadot(amount: number, address: string) {
+	console.log(`[assethub_to_polkadot] connecting`);
+	const api = await connectToWsEndpoint('assetHub');
+	// Assuming 'connectToWsEndpoint' connects to the parachain
+	const paraid = 1000; // The parachain ID where the assetHub is located, change if different
+	console.log(`[assethub_to_polkadot] connected`);
+	const accountId = api.createType("AccountId32", address).toHex();
+  
+	// Define the destination on the Polkadot Relay Chain
+	const destination = {
+	  parents: 1, // One level up from a parachain to the Relay Chain
+	  interior: { Here: null }, // The destination is the Relay Chain itself
+	};
+  
+	const account = {
+	  parents: 0, // The account is on the Relay Chain (no parent required)
+	  interior: { X1: { AccountId32: { id: accountId, network: null } } },
+	};
+  
+	const asset = [
+	  {
+		id: { Concrete: { parents: 1, interior: "Here" } }, // The asset is on the parachain (origin)
+		fun: { Fungible: amount },
+	  },
+	];
+  
+	// The transaction to teleport assets from assetHub to Polkadot
+	const tx = api.tx.polkadotXcm.limitedTeleportAssets(
+	  { V3: destination },
+	  { V3: account },
+	  { V3: asset },
+	  { fee_asset_item: 0},
+	  { Unlimited: null }, 
+	);
+  
+	return tx;
+  }
 
 /// assethub > hydra
 export async function assethub_to_hydra(assetid: number, amount: number, accountId: string) {
@@ -332,9 +371,10 @@ export async function assethub_to_hydra(assetid: number, amount: number, account
 		parents: 1,
 	};
 
+
 	const account = {
 		parents: 0,
-		interior: { X1: { AccountId32: { id: accountid } } },
+		interior: { X1: { AccountId32: { id: accountid, network: "Any" } } },
 	};
 
 	const asset = {
@@ -343,21 +383,25 @@ export async function assethub_to_hydra(assetid: number, amount: number, account
 				parents: 0,
 				interior: {
 					X2: [
-						{ PalletInstance: 50 },
-						{ GeneralIndex: "1984" },
+					  {
+						PalletInstance: 50,
+					  },
+					  {
+						GeneralIndex: assetid.toString(),
+					  },
 					],
-				},
+				  },
 			},
 		},
 		fun: { Fungible: amount },
-		parents: 0,
+	//	parents: 0,
 	};
 	//];
 
 	const tx = api.tx.polkadotXcm.limitedReserveTransferAssets(
-		{ V3: destination },
-		{ V3: account },
-		{ V3: [asset] },
+		{ V2: destination },
+		{ V2: account },
+		{ V2: [asset] },
 		0,
 		{ Unlimited: 0 }
 	);
