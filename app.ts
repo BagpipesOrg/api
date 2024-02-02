@@ -9,7 +9,7 @@ import { broadcastToChain } from './src/api/broadcast';
 import { isValidChain } from './src/api/Chains';
 import { createWebhook } from './src/utils';
 import logger from './src/logger';
-import { decompressString, scenario_info, insert_scenario, scenario_detailed_info, multi_scenario_info } from './src/scenarios/parse_db';
+import { decompressString, scenario_info, insert_scenario, scenario_detailed_info, multi_scenario_info, create_swap } from './src/scenarios/parse_db';
 
 
 const app = express();
@@ -77,7 +77,7 @@ app.get('/', async (req, res) => {
     res.json({ success: true, documentation: "https://xcmsend.github.io/api/index.html" });
 });
 
-// Get URL
+// Get URL 
 app.get('/getUrl/:shortUrl', async (req, res) => {
   const { shortUrl }: { shortUrl: string } = req.params;
 // console.log(`geturl`);
@@ -91,11 +91,37 @@ app.get('/getUrl/:shortUrl', async (req, res) => {
   }
 });
 
+// bagpipes: swap assetin to assetout amount
+app.post('/create/swap', async (req, res) => {
 
+  try {
+    // Ensure that the required fields are present in the request body
+    if (!req.body.assetid || !req.body.assetout || !req.body.amount) {
+      return res.status(400).json({ error: 'Missing required fields, view documentation: https://xcmsend.github.io/api/docs.html' });
+    }
+
+    const assetin: number = parseInt(req.body.assetin, 10);
+    const assetout: number = parseInt(req.body.assetout, 10);
+    const amount: number = parseInt(req.body.amount, 10);
+
+    // Validate that the parsed values are valid numbers
+    if (isNaN(assetin) || isNaN(assetout) || isNaN(amount)) {
+      return res.status(400).json({ error: 'submit assetid, amount and assetout as numbers ' });
+    }
+
+    const out = await create_swap(assetin, assetout, amount);
+    res.status(200).json({ success: true, swap: out });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error, reach fellow developers on bagpipes discord: https://discord.gg/ZBfmzJ7Jjz' });
+  }
+});
 
 // curl -X POST -H "Content-Type: application/json" -d '{"source_chain": "polkadot", "dest_chain": "hydraDx", "source_address": "your_source_address", "amount": 100, "assetid": 1}' http://localhost:8080/create/scenario
 // {"result":"QWdI3KifK"}
 // create scenerio 
+// 
+// xcmsend: assetid1984 from assethub to hydra destaddress
 app.post('/create/scenario', async ( req, res) => {
 
   const source_chain: string = req.body.source_chain;

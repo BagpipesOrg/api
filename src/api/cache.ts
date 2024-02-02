@@ -1,5 +1,5 @@
 interface Cache {
-    [key: string]: any;
-  }
-  
-  export const memoryCache: Cache = {};
+  [key: string]: any
+}
+
+export const memoryCache: Cache = {}
