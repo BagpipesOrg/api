@@ -190,21 +190,21 @@ export async function create_swap(assetin: number, assetout: number, amount: num
     type: 'chain',
     position: {
       x: -248.7668445883158,
-      y: -206.36392800608164
+      y: -206.36392800608164,
     },
     data: {
-      label: "Chain",
-      image: "./chain.svg",
-      name: "Chain"
+      label: 'Chain',
+      image: './chain.svg',
+      name: 'Chain',
     },
     style: {},
     formData: {
       chain: chain,
       asset: {
-        "name": "HydraDX",
-        "assetId": assetin.toString(),
-        "symbol": source_asset_symbol
-      },      
+        name: 'HydraDX',
+        assetId: assetin.toString(),
+        symbol: source_asset_symbol,
+      },
       address: 'not set',
       amount: amount.toString(),
       delay: null,
@@ -215,9 +215,9 @@ export async function create_swap(assetin: number, assetout: number, amount: num
     selected: false,
     positionAbsolute: {
       x: -248.7668445883158,
-      y: -206.36392800608164
+      y: -206.36392800608164,
     },
-        dragging: false,
+    dragging: false,
   }
 
   const action_node: Node = {
@@ -229,7 +229,7 @@ export async function create_swap(assetin: number, assetout: number, amount: num
     },
     data: {
       label: 'action',
-      triggerToast: true
+      triggerToast: true,
     },
     style: {},
     formData: {
@@ -248,7 +248,7 @@ export async function create_swap(assetin: number, assetout: number, amount: num
           chain: chain,
           assetId: assetout.toString(),
           address: 'not set',
-          symbol: dest_asset_symbol
+          symbol: dest_asset_symbol,
         },
       },
     },
