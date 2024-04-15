@@ -72,6 +72,47 @@ export function listChains() {
   }
   chainList[2032] = interlay
 
+
+  const Moonriver: ChainInfo = {
+    name: 'moonriver',
+    display: 'Moonriver (Kusama)',
+    paraid: 2023,
+    ws_endpoint: endpoints.kusama.moonriver,
+    prefix: 42, 
+    token_decimals: 18, 
+    logo: '/chains/moonriver.svg',
+  //  parachain: true, 
+  //  relayParent: "kusama",
+ //   relay: false
+  };
+  chainList[2023] = Moonriver;
+
+  const MangataX: ChainInfo = {
+    name: "mangatax",
+    display: "MangataX (Kusama)",
+    paraid: 2110,
+    prefix: 42,
+    token_decimals: 12,
+    logo: '/chains/mangata.png',
+    ws_endpoint: endpoints.kusama.mangata,
+
+  };
+
+  chainList[2110] = MangataX;
+
+  const Turing: ChainInfo = {
+    name: 'turing',
+    display: 'Turing (Kusama)',
+    paraid: 2114,
+    prefix: 51,
+    token_decimals: 10,
+    logo: '/chains/turing.png',
+    ws_endpoint: endpoints.kusama.turing,
+
+  };
+  chainList[2114] = Turing;
+
+
   const rococo: ChainInfo = {
     name: 'rococo',
     display: 'Rococo',
@@ -92,6 +133,9 @@ export enum supported_Polkadot_Chains {
   hydradx,
   assethub,
   interlay,
+  moonriver,
+  turing,
+  mangatax
 }
 
 /// send the 90% of the dot to be converted to USDT, the rest will be sent
@@ -136,6 +180,39 @@ export const CHAIN_METADATA = {
     queryBalancePaths: ['system.account', 'assets.account'],
     nativeAccount: true,
   },
+
+  mangatax: {
+    chain: "mangatax",
+    endpoints: [
+        "wss://kusama-archive.mangata.online",
+        "wss://kusama-rpc.mangata.online",
+    ],
+    queryAssetPaths: ["assetRegistry.metadata"],  
+    queryBalancePaths: ["system.account"],
+    nativeAccount: true,
+},
+moonriver: {
+    chain: "moonriver",
+    endpoints: [
+        "wss://moonriver-rpc.dwellir.com",
+        "wss://wss.api.moonriver.moonbeam.network"
+    ],
+    queryAssetPaths: ["assetRegistry.metadata"],  
+    queryBalancePaths: ["system.account" ,"assets.accounts"],
+    nativeAccount: true
+},
+
+turing: {
+    chain: "turing",
+    endpoints: [
+        "wss://rpc.turing.oak.tech"
+    ],
+    queryAssetPaths: ["assetRegistry.metadata"],  
+    queryBalancePaths: ["system.account" ,"tokens.accounts"],
+    nativeAccount: true
+},
+
+
 }
 
 export { AssetInfo, ChainInfo }
