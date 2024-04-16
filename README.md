@@ -8,10 +8,12 @@
 [xcmsend.github.io/api](https://xcmsend.github.io/api/index.html)
 
 ## Supported chains: 
- -  Assethub Polkadot 
+ -  Assethub(Polkadot)
  -  Polkadot  
- -  HydraDx  
- -  Interlay   
+ -  HydraDx(Polkadot)  
+ -  Interlay(Polkadot)   
+ -  Turing(Kusama)  
+ -  Moonriver(Kusama)
 
 
 ## DB:    
@@ -85,8 +87,7 @@ TODO
 Create a new scenario.  
 ### Code:
 ```shell
-$ curl -X POST -H "Content-Type: application/json" -d '{"source_chain": "polkadot", "dest_chain": "hydraDx", "source_address": "your_source_address", "amount": 100, "assetid": 1}' http://localhost:8080/create/scenario
-$ {"result":"QWdI3KifK"}
+$ curl -X POST -H "Content-Type: application/json" -d '{"source_chain": "turing", "dest_chain": "moonriver", "destination_address": "my dest address goes here", "amount": 100, "assetid": 0}' http://localhost:8080/create/scenario 
 ```
     
 After your scenario id is generated, you can import it in the ui:   

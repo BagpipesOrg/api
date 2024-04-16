@@ -174,7 +174,9 @@ app.post('/create/scenario', async (req, res) => {
     return res.status(400).json({ error: 'Invalid destination_address provided.' })
   }
 
-  //if (source_address || dest_chain == "moonriver")
+ if (dest_address || dest_chain == "moonriver" || !dest_address.startsWith("0x")) {
+  return res.status(400).json({error: "give me an evm address for moonbeams destinatino_address"})
+ }
 
   if (isNaN(amount) || amount <= 0) {
     return res.status(400).json({ error: 'Invalid amount provided.' })
