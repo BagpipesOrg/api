@@ -19,7 +19,7 @@ interface AssetInfo {
 }
 
 export function isValidChain(chain: string): boolean {
-  const validChains = ['polkadot', 'hydraDx', 'assetHub', 'interlay']
+  const validChains = ['polkadot', 'hydraDx', 'assetHub', 'interlay', 'moonriver', 'turing' , 'mangatax']
 
   return typeof chain === 'string' && validChains.includes(chain)
 }
@@ -175,7 +175,7 @@ export const CHAIN_METADATA = {
   },
   assetHub: {
     chain: 'AssetHub',
-    endpoints: ['wss://polkadot-asset-hub-rpc.polkadot.io', 'wss://statemint.api.onfinality.io/public-ws'],
+    endpoints: ['wss://statemine-rpc.dwellir.com', 'wss://polkadot-asset-hub-rpc.polkadot.io', 'wss://statemint.api.onfinality.io/public-ws'],
     queryAssetPaths: ['assets.metadata'],
     queryBalancePaths: ['system.account', 'assets.account'],
     nativeAccount: true,

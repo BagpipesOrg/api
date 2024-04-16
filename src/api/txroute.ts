@@ -6,6 +6,9 @@ import {
   polkadot_to_assethub,
   assethub_to_parachain,
   assethub_to_hydra,
+  moonriver2turing,
+  turing2moonriver,
+  turing2mangata
 } from './DraftTx'
 
 /// spit out a tx
@@ -41,6 +44,15 @@ export async function route_tx(
       console.log('handleTransfer for HydraDx to Polkadot...')
       const paraid2 = 0
       return hydraDxToParachain(amount, assetid, destinationaddress, paraid2)
+
+    case 'moonriver:turing':
+      return moonriver2turing(destinationaddress, amount)
+
+    case 'turing:moonriver':
+      return turing2moonriver(destinationaddress, amount)
+
+    case 'turing:mangatax':
+      return turing2mangata(amount, destinationaddress)
 
     case 'assethub:polkadot':
       console.log('handleTransfer for AssetHub to Polkadot...')

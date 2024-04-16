@@ -25,6 +25,7 @@ const port = 8080
 app.use(bodyParser.json())
 app.use(cors())
 
+// todo add kusamas
 // open channels, list open ingoing and outgoing hrmp channels for paraid
 app.post('/polkadot/openchannels', async (req, res) => {
   const paraid = req.body.paraid // get the chains paraid

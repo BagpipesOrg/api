@@ -178,7 +178,47 @@ export async function turing2moonriver(accountido: string, amount: number) {
 
 
 
+// send TUR native from turing to mangatax
+export async function turing2mangata(amount: number, accountido: string) {
+  // const wsProvider = new WsProvider('wss://rpc.turing.oak.tech');
+  const api = await connectToWsEndpoint("turing");
+  const accountid = raw_address_now(accountido);
+  const parachainid = 2114; // mangatax
 
+  const asset = {
+    id: {
+      Concrete: {
+        parents: 1,
+        interior: {
+          X1: { Parachain: parachainid },
+        },
+      },
+    },
+    fun: { Fungible: amount.toString() },
+  };
+  //console.log(`asset:`, asset);
+  const destination = {
+    parents: 1,
+    interior: {
+      X2: [
+        { Parachain: 2110 }, // turing paraid
+        {
+          accountId32: {
+            network: null,
+            id: accountid,
+          },
+        },
+      ],
+    },
+  };
+
+  const tx = await api.tx.xTokens.transferMultiasset(
+    { V3: asset },
+    { V3: destination },
+    { Limited: { proof_size: 0, ref_time: 4000000000 } }
+  );
+  return tx;
+}
 
 
 
