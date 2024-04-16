@@ -137,8 +137,11 @@ export function substrate_address_to_evm(accountid32: string): string {
 
 // https://turing.subscan.io/extrinsic/4825155-2
 export async function turing2moonriver(accountido: string, amount: number) {
+  console.log(`turing 2 moonriver tx gen`);
+  console.log(`tx input: `, accountido, amount);
   const api = await connectToWsEndpoint("turing");
-  const accountme = substrate_address_to_evm(accountido); // convert to evm address
+  //const accountme = 
+  const accountme = accountido;//substrate_address_to_evm(accountido); // convert to evm address
 
   const asset = {
     id: {

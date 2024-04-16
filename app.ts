@@ -141,7 +141,7 @@ app.post('/create/swap', async (req, res) => {
   }
 })
 
-// curl -X POST -H "Content-Type: application/json" -d '{"source_chain": "polkadot", "dest_chain": "hydraDx", "source_address": "your_source_address", "amount": 100, "assetid": 1}' http://localhost:8080/create/scenario
+// curl -X POST -H "Content-Type: application/json" -d '{"source_chain": "polkadot", "dest_chain": "hydraDx", "destination_address": "your_destination_address", "amount": 100, "assetid": 1}' http://localhost:8080/create/scenario
 // {"result":"QWdI3KifK"}
 // create scenerio
 //
@@ -149,7 +149,7 @@ app.post('/create/swap', async (req, res) => {
 app.post('/create/scenario', async (req, res) => {
   const source_chain: string = req.body.source_chain
   const dest_chain: string = req.body.dest_chain
-  const source_address: string = req.body.source_address
+  const dest_address: string = req.body.destination_address // this should be dest_address
   const amount: number = req.body.amount
   const assetid: number = req.body.assetid
 
@@ -170,19 +170,21 @@ app.post('/create/scenario', async (req, res) => {
     return res.status(400).json({ error: 'Invalid dest_chain provided.' })
   }
 
-  if (!source_address || typeof source_address !== 'string') {
-    return res.status(400).json({ error: 'Invalid source_address provided.' })
+  if (!dest_address || typeof dest_address !== 'string') {
+    return res.status(400).json({ error: 'Invalid destination_address provided.' })
   }
+
+  //if (source_address || dest_chain == "moonriver")
 
   if (isNaN(amount) || amount <= 0) {
     return res.status(400).json({ error: 'Invalid amount provided.' })
   }
 
-  if (isNaN(assetid) || assetid <= 0) {
+  if (isNaN(assetid) || assetid < 0) {
     return res.status(400).json({ error: 'Invalid assetid provided.' })
   }
 
-  const shorturl = await insert_scenario(source_chain, dest_chain, source_address, amount, assetid)
+  const shorturl = await insert_scenario(source_chain, dest_chain, dest_address, amount, assetid)
   console.log(`got the shorturl:`, shorturl)
 
   res.json({ result: shorturl })
@@ -231,23 +233,26 @@ app.post('/scenario/info/full', async (req, res) => {
   }
 
   const scenario_id = req.body.id
-
+  console.log(`got user input:`, scenario_id);
   if (!scenario_id) {
+    console.log(`no scenario id`);
     return res.json({
       result:
         "No scenario id detected, provide a request like this: curl -X ENDPOINT/scenario/info -d {'id':'my scenario id here'}",
     })
   }
   try {
+    console.log(`calling get url`);
     const get_data = await getUrl(scenario_id)
     if (!get_data) {
+       console.log(`did not get data`);
       return res.json({ result: 'Could not find the scenario data' })
     }
-    //  console.log(`get_data is:`, get_data);
+    console.log(`get_data is:`, get_data);
     const decoded = await decompressString(get_data)
-    //   console.log(`decoded: `, decoded);
+    console.log(`decoded: `, decoded);
     const deep_coded = await scenario_detailed_info(JSON.parse(decoded))
-    //   console.log(`deep info:`, deep_coded);
+    console.log(`deep info:`, deep_coded);
     //  const out = await scenario_info(decoded);
     output['summary'] = deep_coded.source_chain + ' > ' + deep_coded.tx_type + ' > ' + deep_coded.dest_chain
     output['txtype'] = deep_coded.tx_type
@@ -268,9 +273,10 @@ app.post('/scenario/info/full', async (req, res) => {
         parseFloat(output['amount']),
         deep_coded.dest_address,
       )
-      //   console.log(`tx is: `, tx.toHex());
+      console.log(`tx is: `, tx.toHex());
       output['tx'] = tx.toHex()
     } catch (error) {
+      console.log(`tx gen error: `, error);
       output['tx'] = 'could not generate tx'
     }
   } catch (error) {

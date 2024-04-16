@@ -442,7 +442,7 @@ export async function scenario_detailed_info(scenario_data: Graph) {
 export async function insert_scenario(
   source_chain: string,
   dest_chain: string,
-  source_address: string,
+  dest_address: string,
   amount: number,
   assetid: number,
 ): Promise<any> {
@@ -485,14 +485,14 @@ export async function insert_scenario(
         source: {
           chain: source_chain,
           assetId: assetid,
-          address: source_address,
+          address: "not set",
           amount: amount.toString(),
           //symbol: "DOT"
         },
         target: {
           chain: dest_chain,
           assetId: assetid.toString(),
-          address: dest_chain,
+          address: dest_address,
         },
       },
     },
@@ -538,7 +538,7 @@ export async function insert_scenario(
   }
 
   const outen: string = JSON.stringify(object)
-  //  console.log(`output: `, outen);
+console.log(`output: `, outen);
   const short_url = await compressString(outen)
   //   console.log(`compressed string: `, short_url);
 
