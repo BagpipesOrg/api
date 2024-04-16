@@ -20,6 +20,7 @@ const endpoints = {
     turing: 'wss://turing-rpc.dwellir.com',
     kabocha: 'wss://kabocha.jelliedowl.net',
     mangata: 'wss://kusama-rpc.mangata.online',
+    moonriver: "wss://moonriver-rpc.dwellir.com",
   },
 }
 

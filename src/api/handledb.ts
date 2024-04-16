@@ -107,14 +107,20 @@ const saveUrl = async (longUrl: any): Promise<string> => {
 */
 
   const shortUrl = shortid.generate()
-  memoryCache[shortUrl] = longUrl.url
+  if (longUrl.url) {
+    memoryCache[shortUrl] = longUrl.url
+  } else {
+    memoryCache[shortUrl] = longUrl
+  }
+ 
+
   for (const [key, value] of Object.entries(memoryCache)) {
     urlList.urls.push({ shortUrl: key, longUrl: value })
   }
   //  console.log('writing:', urlList)
   //  console.log(`saving url...`)
-  //  console.log(`[saving url]saveUrl:`, shortUrl);
-  // console.log(`[saving url]longUrl:`, longUrl);
+  console.log(`[saving url]saveUrl:`, shortUrl);
+console.log(`[saving url]longUrl:`, longUrl);
   /*
 
  const fullurldata = longUrl.url;
@@ -137,12 +143,14 @@ const getUrl = async (shortUrl: string): Promise<string | null> => {
   for (const key in memoryCache) {
     if (memoryCache.hasOwnProperty(key)) {
       const value = memoryCache[key]
+      console.log(`Key: ${key}, Value: ${value}`);
+
       if (key == shortUrl) {
-        //  console.log(`found it`);
-        const outme = { shortUrl: key, longUrl: value }
-        return outme.longUrl
+       console.log(`found it`);
+        const outme = { shortUrl: key, longUrl: value };
+        console.log(`returing outme:`, outme);
+        return outme.longUrl;
       }
-      //   console.log(`Key: ${key}, Value: ${value}`);
     }
   }
 

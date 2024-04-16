@@ -1,5 +1,5 @@
 //import { decodeAddress } from '@polkadot/util-crypto';
-import { blake2AsU8a, decodeAddress } from '@polkadot/util-crypto'
+import { blake2AsU8a, decodeAddress, addressToEvm } from '@polkadot/util-crypto'
 import { hexToU8a, isHex, u8aToHex } from '@polkadot/util'
 //import { createTypeUnsafe, GenericCall, GenericExtrinsic, GenericExtrinsicPayload } from '@polkadot/types';
 
@@ -83,6 +83,151 @@ export async function assethub2interlay(assetid: number, amount: number, destacc
 
   return tx
 }
+
+
+
+// https://moonriver.subscan.io/block/0xdc22e440ade2ebc6a5c3c07db1ab05f84f762f3b7a011f07b1fcc4cfbe68198a
+// correct with talisman polkadot wallet: https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fmoonriver.public.curie.radiumblock.co%2Fws#/extrinsics/decode/0x6a0101000101000921000700e40b54020101020009210100ca477d2ed3c433806a8ce7969c5a1890187d765ab8080d3793b49b42aa9e805f00
+export async function moonriver2turing(accountidme: string, amount: number) {
+  const api = await connectToWsEndpoint("moonriver");
+  const accountid = getRawAddress(accountidme);
+  const asset = {
+    id: {
+      Concrete: {
+        interior: {
+          X1: { Parachain: 2114 },
+        },
+        parents: 1,
+      },
+    },
+    fun: { Fungible: amount.toString() },
+  };
+
+  const dest = {
+    parents: 1,
+    interior: {
+      X2: [
+        { Parachain: 2114 }, // Moonriver paraid
+        {
+          Accountid32: {
+            // change me
+            network: null,
+            id: accountid, //convertAccountId32ToAccountId20(accountido),
+          },
+        },
+      ],
+    },
+  };
+
+  const tx = await api.tx.xTokens.transferMultiasset(
+    { V2: asset },
+    { v2: dest },
+    { Unlimited: null }
+  );
+
+  return tx;
+}
+
+export function substrate_address_to_evm(accountid32: string): string {
+  const byteArray = addressToEvm(accountid32);
+  return u8aToHex(byteArray); // return the hex version of the address
+}
+
+
+
+// https://turing.subscan.io/extrinsic/4825155-2
+export async function turing2moonriver(accountido: string, amount: number) {
+  console.log(`turing 2 moonriver tx gen`);
+  console.log(`tx input: `, accountido, amount);
+  const api = await connectToWsEndpoint("turing");
+  //const accountme = 
+  const accountme = accountido;//substrate_address_to_evm(accountido); // convert to evm address
+
+  const asset = {
+    id: {
+      Concrete: {
+        interior: {
+          X1: { Parachain: 2114 },
+        },
+        parents: 1,
+      },
+    },
+    fun: { Fungible: amount.toString() },
+  };
+
+  const destination = {
+    parents: 1,
+    interior: {
+      X2: [
+        { Parachain: 2023 }, // Moonriver paraid
+        {
+          AccountKey20: {
+            // change me
+            network: null,
+            key: accountme, //convertAccountId32ToAccountId20(accountido),
+          },
+        },
+      ],
+    },
+  };
+
+  const tx = await api.tx.xTokens.transferMultiasset(
+    { V3: asset },
+    { V3: destination },
+    { Unlimited: null }
+  );
+  return tx;
+}
+
+
+
+// send TUR native from turing to mangatax
+export async function turing2mangata(amount: number, accountido: string) {
+  // const wsProvider = new WsProvider('wss://rpc.turing.oak.tech');
+  const api = await connectToWsEndpoint("turing");
+  const accountid = raw_address_now(accountido);
+  const parachainid = 2114; // mangatax
+
+  const asset = {
+    id: {
+      Concrete: {
+        parents: 1,
+        interior: {
+          X1: { Parachain: parachainid },
+        },
+      },
+    },
+    fun: { Fungible: amount.toString() },
+  };
+  //console.log(`asset:`, asset);
+  const destination = {
+    parents: 1,
+    interior: {
+      X2: [
+        { Parachain: 2110 }, // turing paraid
+        {
+          accountId32: {
+            network: null,
+            id: accountid,
+          },
+        },
+      ],
+    },
+  };
+
+  const tx = await api.tx.xTokens.transferMultiasset(
+    { V3: asset },
+    { V3: destination },
+    { Limited: { proof_size: 0, ref_time: 4000000000 } }
+  );
+  return tx;
+}
+
+
+
+
+
+
 
 // working: https://polkadot.subscan.io/xcm_message/polkadot-6cff92a4178a7bf397617201e13f00c4da124981
 /// ref: https://polkaholic.io/tx/0x47914429bcf15b47f4d202d74172e5fbe876c5ac8b8a968f1db44377906f6654
