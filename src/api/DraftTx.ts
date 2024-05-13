@@ -43,6 +43,17 @@ function number_to_string(input: number): number {
   return integerNumber
 }
 
+
+export async function generic_system_remark(chain: string, msg: string) {
+
+  const api = await connectToWsEndpoint(chain);
+
+  return api.tx.system.remarkWithEvent(msg);
+
+}
+
+
+
 // https://assethub-polkadot.subscan.io/extrinsic/4929110-2
 export async function assethub2interlay(assetid: number, amount: number, destaccount: string) {
   const paraid = 2032
