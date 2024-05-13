@@ -7,6 +7,7 @@ import { inandoutchannels } from './src/api/xcmhelper'
 import { saveUrl, getUrl } from './src/api/handledb'
 import { broadcastToChain } from './src/api/broadcast'
 import { isValidChain } from './src/api/Chains'
+import { generic_system_remark } from './src/api/DraftTx';
 import { createWebhook } from './src/utils'
 import logger from './src/logger'
 import {
@@ -140,6 +141,21 @@ app.post('/create/swap', async (req, res) => {
       })
   }
 })
+
+// curl -X POST -H "Content-Type: application/json" -d '{"chain": "polkadot", "msg": "hack the planet"}' http://localhost:8080/system-remark  
+app.post('/system-remark', async (req, res) => {
+  const chain: string = req.body.chain;
+  const msg: string = req.body.msg;
+  const chains = ["turing", "moonriver", "mangatax", "assetHub", "interlay", "hydraDx", 'polkadot'];
+  if (!chains.includes(chain)) {
+    return res.json({error: "invalid chain, select one of: turing, moonriver, mangatax, assetHub, interlay, hydraDx, polkadot"});
+  }
+  console.log(`making system remark with: `, chain, msg);
+  const tx = (await generic_system_remark(chain, msg)).toHex();
+  res.json({ result: tx })
+})
+
+
 
 // curl -X POST -H "Content-Type: application/json" -d '{"source_chain": "polkadot", "dest_chain": "hydraDx", "destination_address": "your_destination_address", "amount": 100, "assetid": 1}' http://localhost:8080/create/scenario
 // {"result":"QWdI3KifK"}
