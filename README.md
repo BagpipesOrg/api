@@ -25,10 +25,21 @@ The format is `{storage_key, compressed_diagramdata}`
  echo "{urls:[]}" > dist/src/api/urls2.json
  ```
 
+## Run Development Server
+
+```shell
+$ npm run start  
+```
+
 
 ### Build:  
 ```shell
-$ npm run buildme
+$ npm run build
+```
+
+### Run the Build:   
+```shell
+$ npm run api  
 ```
 **Note:**
 If you want to enable webhooks, you need to set the enviromental variable:
@@ -36,10 +47,12 @@ If you want to enable webhooks, you need to set the enviromental variable:
 $ export WEBHOOK_SITE_API_KEY =
 ```
 
-### Run:   
-```shell
-$ npm run api  
-```
+
+
+
+
+
+
 
 
 ### Info:  

@@ -38,3 +38,13 @@ Thumbs.db
 # Build files
 build/
 out/
+
+.env
+
+
+combined.log
+dump.rdb
+error.log
+output.log
+
+
