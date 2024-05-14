@@ -57,23 +57,23 @@ $ export WEBHOOK_SITE_API_KEY =
 
 ### Info:  
 
-##### Path: `/scenario/info`;   
+##### Path: /`api//scenario/info`;   
 Get information about a scenario.  
 
 ### Code:
 ```shell
-$ curl -X POST -H "Content-Type: application/json" -d '{"id": "Uvervffcw"}' http://localhost:8080/scenario/info
+$ curl -X POST -H "Content-Type: application/json" -d '{"id": "Uvervffcw"}' http://localhost:8080/api/scenario/info
 $ {"result":"assetHub > xTransfer > polkadot"}
 ```
 
 
-##### Path: `/scenario/info/full`;   
+##### Path: `/api/scenario/info/full`;   
 Get full information about a scenario.  
 
 ### Code:
 
 ```shell
-$ curl -X POST -H "Content-Type: application/json" -d '{"id": "Ts5hx-ng7"}' http://localhost:8080/scenario/info/full
+$ curl -X POST -H "Content-Type: application/json" -d '{"id": "Ts5hx-ng7"}' http://localhost:8080/api/scenario/info/full
 {"result": "tx":"0xe804630903000100a10f0300010100f621771ddf37d482210b8c59617952eb1c2b40cfec55df47215231365186a057030400000000500000000000","summary":"polkadot > xTransfer > assetHub","asset":"0","amount":"20","source_chain":"polkadot","dest_chain":"assetHub","txtype":"xTransfer"}}
 ```
 **Note:** replace `Ts5hx-ng7` with your scenario id key.   
@@ -96,11 +96,11 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"id": "Ts5hx-ng7"}' http
 
 TODO
 
-##### Path: `/create/scenario`;   
+##### Path: `/api/scenario/create`;   
 Create a new scenario.  
 ### Code:
 ```shell
-$ curl -X POST -H "Content-Type: application/json" -d '{"source_chain": "turing", "dest_chain": "moonriver", "destination_address": "my dest address goes here", "amount": 100, "assetid": 0}' http://localhost:8080/create/scenario 
+$ curl -X POST -H "Content-Type: application/json" -d '{"source_chain": "turing", "dest_chain": "moonriver", "destination_address": "my dest address goes here", "amount": 100, "assetid": 0}' http://localhost:8080/api/scenario/create 
 ```
     
 After your scenario id is generated, you can import it in the ui:   
@@ -110,13 +110,13 @@ TODO
 
 
 
-##### Path: `/xcm-asset-transfer`:
+##### Path: `/api/xcm/asset-transfer`:
 Generate a raw xcm transaction.   
 
 
 ######  Code example: 
 ```shell
-curl -X POST http://127.0.0.1:8080/xcm-asset-transfer   -H "Content-Type: application/json"   -d '{
+curl -X POST http://127.0.0.1:8080/api/xcm/asset-transfer   -H "Content-Type: application/json"   -d '{
     "sourchain": "polkadot",
     "destchain": "assetHub",
     "assetid": "0",
@@ -140,14 +140,14 @@ curl -X POST http://127.0.0.1:8080/xcm-asset-transfer   -H "Content-Type: applic
 The developer can then create their own frontend so that their user can sign the transaction. Thereafter, the transaction can be broadcast. 
 
 
-##### Path: `/polkadot/openchannels`:
+##### Path: `/api/hrmp/polkadot/openchannels`:
 
 ###### Information:  
 Check what hrmp channels are avaliable for a parachain connected to polkadot.  
 
 ###### Code example:  
 ```shell
-curl -X POST -H "Content-Type: application/json" -d '{"paraid": 1000}' http://localhost:8080/polkadot/openchannels 
+curl -X POST -H "Content-Type: application/json" -d '{"paraid": 1000}' http://localhost:8080/api/hrmp/polkadot/openchannels
 ```
 
 *Input:*
@@ -159,7 +159,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"paraid": 1000}' http://lo
 paraid = the paraid(as number) of the chain  
 
 
-###### Path: /Broadcast
+###### Path: /api/chain/Broadcast
 
 Broadcast a transaction using author submit extrinsics.
 
@@ -168,7 +168,7 @@ Broadcast a transaction using author submit extrinsics.
 curl -X POST -H "Content-Type: application/json" -d '{
   "chain": "polkadot",
   "tx": "0x91028400f2529946850f8dd66c794a795a6b01a911f25df007e4cf5f97f38a037380f2500114903d6caaa301dfc22a6d19df61ba38b547a70a492eb57bcdcb9298161b18562e13421b314c22a9e007c9e49583f77bb0faf7047f6456c78c5487225e1a8f84b500a50200630903000100a10f0300010100f2529946850f8dd66c794a795a6b01a911f25df007e4cf5f97f38a037380f25003040000000002286bee0000000000"
-}' http://127.0.0.1:8080/broadcast
+}' http://127.0.0.1:8080/api/chain/Broadcast
 ```
 
 ```
