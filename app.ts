@@ -38,8 +38,8 @@ import actionsRoute from './src/routes/actions.ts';
 
 // CORS options
 const corsOptions = {
-  origin: 'http://localhost:5173',
-  credentials: true,
+//  origin: 'http://localhost:5173', | the api is reverse proxied from nginx, so this does not work 
+  credentials: false,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   preflightContinue: false,
   optionsSuccessStatus: 204,
@@ -53,12 +53,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(cookieParser(process.env.COOKIE_PARSER_SECRET));
+/*
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }));
-
+*/
 
 
 app.use((req, res, next) => {
