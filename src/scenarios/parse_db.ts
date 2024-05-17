@@ -485,7 +485,7 @@ export async function insert_scenario(
         source: {
           chain: source_chain,
           assetId: assetid,
-          address: "not set",
+          address: 'not set',
           amount: amount.toString(),
           //symbol: "DOT"
         },
@@ -538,7 +538,7 @@ export async function insert_scenario(
   }
 
   const outen: string = JSON.stringify(object)
-console.log(`output: `, outen);
+  console.log(`output: `, outen)
   const short_url = await compressString(outen)
   //   console.log(`compressed string: `, short_url);
 

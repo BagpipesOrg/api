@@ -1,11 +1,10 @@
-import { Router } from 'express';
-import dotenv from 'dotenv';
-import axios from 'axios';
+import { Router } from 'express'
+import dotenv from 'dotenv'
+import axios from 'axios'
 import { inandoutchannels } from '../api/xcmhelper'
 
-dotenv.config();
-const router = Router();
-
+dotenv.config()
+const router = Router()
 
 // todo add kusamas
 // open channels, list open ingoing and outgoing hrmp channels for paraid
@@ -18,5 +17,4 @@ router.post('/polkadot/openchannels', async (req, res) => {
   res.json({ open_hrmp_channels: channels, sourcechain: paraid })
 })
 
-
-  export default router;
+export default router

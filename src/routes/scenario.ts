@@ -1,14 +1,12 @@
-
-import { Router } from 'express';
+import { Router } from 'express'
 // import startScenarioExecution  from '../services/startScenarioExecution.js';
 // import Execution from '../models/Execution.js';
 // import ExecutionLog from '../models/ExecutionLog.js';
 // import UserMetadata from '../models/UserMetadata.js';
 // import Scenario from '../models/Scenario.js';
 // import verifyToken from '../services/verifyToken.js';
-// import executionQueue from '../jobs/jobQueue.js';  
+// import executionQueue from '../jobs/jobQueue.js';
 // import { saveScenario } from '../utils/saveToDb.js';
-
 
 import { getUrl } from './../api/handledb'
 import { isValidChain } from './../api/Chains'
@@ -23,8 +21,7 @@ import {
   create_swap,
 } from './../scenarios/parse_db'
 
-
-const router = Router();
+const router = Router()
 
 ////// FILIP ADDITIONS
 
@@ -61,9 +58,9 @@ router.post('/create', async (req, res) => {
     return res.status(400).json({ error: 'Invalid destination_address provided.' })
   }
 
- if (dest_address || dest_chain == "moonriver" || !dest_address.startsWith("0x")) {
-  return res.status(400).json({error: "give me an evm address for moonbeams destinatino_address"})
- }
+  if (dest_address || dest_chain == 'moonriver' || !dest_address.startsWith('0x')) {
+    return res.status(400).json({ error: 'give me an evm address for moonbeams destinatino_address' })
+  }
 
   if (isNaN(amount) || amount <= 0) {
     return res.status(400).json({ error: 'Invalid amount provided.' })
@@ -122,26 +119,26 @@ router.post('/info/full', async (req, res) => {
   }
 
   const scenario_id = req.body.id
-  console.log(`got user input:`, scenario_id);
+  console.log(`got user input:`, scenario_id)
   if (!scenario_id) {
-    console.log(`no scenario id`);
+    console.log(`no scenario id`)
     return res.json({
       result:
         "No scenario id detected, provide a request like this: curl -X ENDPOINT/scenario/info -d {'id':'my scenario id here'}",
     })
   }
   try {
-    console.log(`calling get url`);
+    console.log(`calling get url`)
     const get_data = await getUrl(scenario_id)
     if (!get_data) {
-       console.log(`did not get data`);
+      console.log(`did not get data`)
       return res.json({ result: 'Could not find the scenario data' })
     }
-    console.log(`get_data is:`, get_data);
+    console.log(`get_data is:`, get_data)
     const decoded = await decompressString(get_data)
-    console.log(`decoded: `, decoded);
+    console.log(`decoded: `, decoded)
     const deep_coded = await scenario_detailed_info(JSON.parse(decoded))
-    console.log(`deep info:`, deep_coded);
+    console.log(`deep info:`, deep_coded)
     //  const out = await scenario_info(decoded);
     output['summary'] = deep_coded.source_chain + ' > ' + deep_coded.tx_type + ' > ' + deep_coded.dest_chain
     output['txtype'] = deep_coded.tx_type
@@ -162,10 +159,10 @@ router.post('/info/full', async (req, res) => {
         parseFloat(output['amount']),
         deep_coded.dest_address,
       )
-      console.log(`tx is: `, tx.toHex());
+      console.log(`tx is: `, tx.toHex())
       output['tx'] = tx.toHex()
     } catch (error) {
-      console.log(`tx gen error: `, error);
+      console.log(`tx gen error: `, error)
       output['tx'] = 'could not generate tx'
     }
   } catch (error) {
@@ -209,9 +206,7 @@ router.post('/call', (req, res) => {
   res.json({ receivedData: 'todo' })
 })
 
-
 /// RAMSEY SERVER
-
 
 // router.post('/execute', verifyToken, async (req, res) => {
 //   let executionId: any;
@@ -220,18 +215,17 @@ router.post('/call', (req, res) => {
 //     console.log('[/execute] body request...', req.body);
 
 //     console.log('Workflow execution started');
-  
+
 //     // If the user is not attached, something went wrong
 //     if (!req.user || !req.user._id) {
 //         console.log('No user or user._id found in req:', req.user);
 //         return res.status(403).json({ error: "User not authenticated" });
 //     }
 
-    
 //     // Create a new Execution instance
 //     const newExecution = new Execution({
 //       scenario: scenario,
-//       user: req.user._id, 
+//       user: req.user._id,
 
 //     });
 
@@ -255,8 +249,7 @@ router.post('/call', (req, res) => {
 //     //     executionId,
 //     //     validNodeIds: []
 //     // });
-  
-  
+
 //     // Immediately respond with the execution ID
 //     res.json({ executionId });
 //     console.log('execution id:', executionId);
@@ -276,31 +269,30 @@ router.post('/call', (req, res) => {
 
 // router.post('/createScenario', verifyToken, async (req, res) => {
 //     const { initialData } = req.body;
-  
+
 //     try {
 //       // Create a new Scenario in the database
-//       const newScenario = await Scenario.create({ 
-//         ...initialData,  
+//       const newScenario = await Scenario.create({
+//         ...initialData,
 //         user: req.user._id
 //       });
-  
+
 //       // Send the new MongoDB _id back to the client
 //       res.status(201).json({ message: 'Scenario created successfully.', _id: newScenario._id });
 //       console.log(`Scenario created successfully with ID: ${newScenario._id}`);
-  
+
 //     } catch (error) {
 //       console.error('Error creating scenario:', error.message);
 //       res.status(500).json({ message: 'Error creating scenario' });
 //     }
 //   });
-  
 
-// // Save Scenario 
+// // Save Scenario
 // router.post('/save', verifyToken, async (req, res) => {
 //     console.log('request body in /save', req.body)
 //     const scenarioData  = req.body.scenarioData;
 //     console.log('scenarioData is req.body in /save:', scenarioData);
-  
+
 //     const userId = req.user ? req.user._id : null;
 //     console.log('userId in /save:', userId);
 
@@ -327,7 +319,6 @@ router.post('/call', (req, res) => {
 //     }
 // });
 
-
 // // Server-side code for fetching heavy data
 // router.get('/load/:_id', verifyToken, async (req, res) => {
 //     const _id = req.params._id;
@@ -348,33 +339,32 @@ router.post('/call', (req, res) => {
 //         res.status(404).json({ message: 'Scenario not found' });
 //         return;
 //       }
-  
+
 //       if (String(scenario.user) !== String(req.user._id)) {
 //         res.status(403).json({ message: 'You do not have permission to modify this scenario' });
 //         return;
 //       }
-  
+
 //     try {
-  
+
 //       if (!scenario) {
 //         res.status(404).json({ message: 'Scenario not found' });
 //         return;
 //       }
-  
+
 //       // Respond with the full scenario
 //       res.json(scenario);
-  
+
 //     } catch (error) {
 //       console.error('Error loading scenario:', error);  // Log the error for debugging
-    
+
 //       if (error.name === 'CastError') {
 //         return res.status(400).json({ error: 'Invalid ID format' });
 //       }
-    
+
 //       return res.status(500).json({ error: 'Internal Server Error' });
 //     }
 //   });
-  
 
 // router.get('/executionData/:executionId', verifyToken, async (req, res) => {
 //     try {
@@ -416,17 +406,17 @@ router.post('/call', (req, res) => {
 //         console.log('[deleteScenario] just before find Scenario _id:', _id)
 //         // Fetch scenario to check if it belongs to the authenticated user
 //         // TODO: check if the scenario is valid because a badly formed sceanrio can crash the db
-//         const scenario = await Scenario.findById(_id); 
-    
+//         const scenario = await Scenario.findById(_id);
+
 //         if (!scenario) {
 //           console.log('[deleteScenario] scenario not found');
 //             return res.status(404).json({ message: 'Scenario not found' });
 //         }
-    
+
 //         if (String(scenario.user) !== String(req.user._id)) {
 //             return res.status(403).json({ message: 'You do not have permission to delete this scenario' });
 //         }
-    
+
 //         try {
 //           console.log('[deleteScenario] just before deleteOne', _id);
 //           await Scenario.deleteOne({ _id: _id });
@@ -449,7 +439,7 @@ router.post('/call', (req, res) => {
 //           res.status(500).json({ message: 'Error deleting scenario' });
 //         }
 //     });
-  
+
 //   // Delete a specific execution by executionId
 //   router.delete('/execution/:executionId', verifyToken, async (req, res) => {
 //     const executionId = req.params.executionId;
@@ -461,7 +451,7 @@ router.post('/call', (req, res) => {
 //         res.status(404).json({ message: 'Execution not found' });
 //         return;
 //       }
-  
+
 //       if (String(execution.user) !== String(req.user._id)) {
 //         res.status(403).json({ message: 'You do not have permission to modify this execution' });
 //         return;
@@ -487,7 +477,7 @@ router.post('/call', (req, res) => {
 //         res.status(404).json({ message: 'Execution not found' });
 //         return;
 //         }
-    
+
 //         if (String(execution.user) !== String(req.user._id)) {
 //         res.status(403).json({ message: 'You do not have permission to modify this execution' });
 //         return;
@@ -506,11 +496,5 @@ router.post('/call', (req, res) => {
 //         res.status(500).json({ message: 'Error stopping the execution' });
 //     }
 // });
-
-
-
-
-
-
 
 export default router

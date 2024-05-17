@@ -1,23 +1,23 @@
-import { Request, Response, Router } from 'express';
+import { Request, Response, Router } from 'express'
 
 // Extend Request interface for TypeScript
 declare global {
   namespace Express {
     interface Request {
-      csrfToken(): string;
+      csrfToken(): string
     }
   }
 }
 
-const router = Router();
+const router = Router()
 
 router.get('/', (req: Request, res: Response) => {
-  const csrfToken = req.csrfToken();
-  console.log('csrfToken:', csrfToken);
+  const csrfToken = req.csrfToken()
+  console.log('csrfToken:', csrfToken)
   if (!csrfToken) {
-    return res.status(500).json({ error: 'Could not generate CSRF token' });
+    return res.status(500).json({ error: 'Could not generate CSRF token' })
   }
-  res.json({ csrfToken });
-});
+  res.json({ csrfToken })
+})
 
-export default router;
+export default router

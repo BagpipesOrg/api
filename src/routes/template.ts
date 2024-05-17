@@ -1,12 +1,11 @@
-import { Router } from 'express';
-import dotenv from 'dotenv';
-import axios from 'axios';
+import { Router } from 'express'
+import dotenv from 'dotenv'
+import axios from 'axios'
 
 import { saveUrl, getUrl } from '../api/handledb'
 
-dotenv.config();
-const router = Router();
-
+dotenv.config()
+const router = Router()
 
 // Save Scenario
 //router.post('/save', verifyToken, async (req, res) => {
@@ -49,4 +48,4 @@ router.post('/call', (req, res) => {
   const jsonData = req.body.scenarioid
   res.json({ receivedData: 'todo' })
 })
-  export default router;
+export default router

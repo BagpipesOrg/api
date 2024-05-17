@@ -1,14 +1,11 @@
-import { Router } from 'express';
-import dotenv from 'dotenv';
-import axios from 'axios';
+import { Router } from 'express'
+import dotenv from 'dotenv'
+import axios from 'axios'
 
 import { broadcastToChain } from '../api/broadcast'
 
-
-dotenv.config();
-const router = Router();
-
-
+dotenv.config()
+const router = Router()
 
 // tx broadcast
 // /broadcast input: {chain: 'hydradx', tx: ''}
@@ -33,4 +30,4 @@ router.post('/broadcast', async (req, res) => {
   }
 })
 
-  export default router;
+export default router
