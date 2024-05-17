@@ -1,12 +1,11 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
-import dotenv from 'dotenv';
-import cookieParser from 'cookie-parser';
-import session from 'express-session';
+import dotenv from 'dotenv'
+import cookieParser from 'cookie-parser'
+import session from 'express-session'
 
-import { createServer } from "http";
-
+import { createServer } from 'http'
 
 import { saveUrl, getUrl } from './src/api/handledb'
 import { isValidChain } from './src/api/Chains'
@@ -21,38 +20,36 @@ import {
   create_swap,
 } from './src/scenarios/parse_db'
 
-dotenv.config();
+dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT || 8080
 
-import testRoute from './src/routes/test.ts';
-import scenarioRoute from './src/routes/scenario.ts';
-import webhookRoute from './src/routes/webhook.ts';
-import httpRoute from './src/routes/http.ts';
-import hrmpRoute from './src/routes/hrmp.ts';
-import chainRoute from './src/routes/chain.ts';
-import templateRoute from './src/routes/template.ts';
-import actionsRoute from './src/routes/actions.ts';
-
+import testRoute from './src/routes/test'
+import scenarioRoute from './src/routes/scenario'
+import webhookRoute from './src/routes/webhook'
+import httpRoute from './src/routes/http'
+import hrmpRoute from './src/routes/hrmp'
+import chainRoute from './src/routes/chain'
+import templateRoute from './src/routes/template'
+import actionsRoute from './src/routes/actions'
 
 // CORS options
 const corsOptions = {
-//  origin: 'http://localhost:5173', | the api is reverse proxied from nginx, so this does not work 
+  //  origin: 'http://localhost:5173', | the api is reverse proxied from nginx, so this does not work
   credentials: false,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   preflightContinue: false,
   optionsSuccessStatus: 204,
-};
+}
 
-
-app.use(cors(corsOptions));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(cors(corsOptions))
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
 // Use body-parser middleware to parse JSON
-app.use(bodyParser.json());
+app.use(bodyParser.json())
 
-app.use(cookieParser(process.env.COOKIE_PARSER_SECRET));
+app.use(cookieParser(process.env.COOKIE_PARSER_SECRET))
 /*
 app.use(session({
   secret: process.env.SESSION_SECRET,
@@ -61,13 +58,12 @@ app.use(session({
 }));
 */
 
-
 app.use((req, res, next) => {
   // req.io = io;
-  console.log('Time:', Date.now());
-  console.log('Request Body in app.js:', req.body);
-  next();
-});
+  console.log('Time:', Date.now())
+  console.log('Request Body in app.js:', req.body)
+  next()
+})
 
 app.use('/api/test', testRoute)
 app.use('/api/scenario', scenarioRoute)
@@ -78,13 +74,12 @@ app.use('/api/chain', chainRoute)
 app.use('/api/template', templateRoute)
 app.use('/api/actions', actionsRoute)
 
-
-const httpServer = createServer(app);
+const httpServer = createServer(app)
 
 // Listen for HTTP connections.
 httpServer.listen(PORT, () => {
-  logger.info(`Server is running on port ${PORT}`);
-});
+  logger.info(`Server is running on port ${PORT}`)
+})
 
 // // todo add kusamas
 // // open channels, list open ingoing and outgoing hrmp channels for paraid
@@ -164,12 +159,10 @@ httpServer.listen(PORT, () => {
 //   console.log(`create swap: `, req.body);
 //   try {
 //     console.log(`output: `, req.body.assetin, req.body.assetout, req.body.amount);
-    
-  
+
 //     const assetin: number = parseInt(req.body.assetin, 10)
 //     const assetout: number = parseInt(req.body.assetout, 10)
 //     const amount: number = parseInt(req.body.amount, 10)
-
 
 //     if (typeof assetin !== 'number' ||
 //         typeof assetout !== 'number' ||
@@ -183,7 +176,6 @@ httpServer.listen(PORT, () => {
 //         }
 
 //         console.log(`pling plong`);
-
 
 //     // Validate that the parsed values are valid numbers
 //     if (isNaN(assetin) || isNaN(assetout) || isNaN(amount)) {
@@ -202,7 +194,7 @@ httpServer.listen(PORT, () => {
 //   }
 // })
 
-// // curl -X POST -H "Content-Type: application/json" -d '{"chain": "polkadot", "msg": "hack the planet"}' http://localhost:8080/system-remark  
+// // curl -X POST -H "Content-Type: application/json" -d '{"chain": "polkadot", "msg": "hack the planet"}' http://localhost:8080/system-remark
 // app.post('/system-remark', async (req, res) => {
 //   const chain: string = req.body.chain;
 //   const msg: string = req.body.msg;
@@ -214,8 +206,6 @@ httpServer.listen(PORT, () => {
 //   const tx = (await generic_system_remark(chain, msg)).toHex();
 //   res.json({ result: tx })
 // })
-
-
 
 // // curl -X POST -H "Content-Type: application/json" -d '{"source_chain": "polkadot", "dest_chain": "hydraDx", "destination_address": "your_destination_address", "amount": 100, "assetid": 1}' http://localhost:8080/create/scenario
 // // {"result":"QWdI3KifK"}
@@ -391,7 +381,6 @@ httpServer.listen(PORT, () => {
 //   //  console.log(`multisdaat done`);
 //   return res.json({ result: { scenarios: multisdaat } })
 // })
-
 
 // // curl -X POST -H "Content-Type: application/json" http://localhost:8080/create/webhook
 // app.post('/create/webhook', createWebhook)

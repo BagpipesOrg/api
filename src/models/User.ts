@@ -1,12 +1,12 @@
-import { v4 as uuidv4 } from 'uuid';
-import mongoose, { Document, Schema } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid'
+import mongoose, { Document, Schema } from 'mongoose'
 
 interface IUser extends Document {
-  email: string;
-  password: string;
-  isEmailVerified: boolean;
-  userId: string;
-  refreshToken: string | null;
+  email: string
+  password: string
+  isEmailVerified: boolean
+  userId: string
+  refreshToken: string | null
 }
 
 const userSchema = new Schema<IUser>({
@@ -21,7 +21,7 @@ const userSchema = new Schema<IUser>({
   },
   isEmailVerified: {
     type: Boolean,
-    default: false
+    default: false,
   },
   userId: {
     type: String,
@@ -33,8 +33,8 @@ const userSchema = new Schema<IUser>({
     default: null,
     required: false,
   },
-});
+})
 
-const User = mongoose.model<IUser>('User', userSchema);
+const User = mongoose.model<IUser>('User', userSchema)
 
-export default User;
+export default User

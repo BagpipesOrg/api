@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
 const UserMetadata = new mongoose.Schema({
   user: {
@@ -15,16 +15,15 @@ const UserMetadata = new mongoose.Schema({
         {
           execution: String,
           timestamp: Date,
-          status: String, 
-        }
-      ]
+          status: String,
+        },
+      ],
     },
   ],
   metadata_version: {
     type: Number,
     default: 0,
-  }
-});
+  },
+})
 
-export default mongoose.model('UserMetadata', UserMetadata);
-
+export default mongoose.model('UserMetadata', UserMetadata)

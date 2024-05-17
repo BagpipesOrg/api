@@ -116,10 +116,10 @@ async function tx_test() {
       '0x68de6e1566e333753df02b2446f24e1cc2b796cfdf954dc0f39753c578e02a40',
     )
   ).toHex()
-//  assert.strictEqual(
-//    ap_tx,
-//    '0xf8041f080301010000030001010068de6e1566e333753df02b2446f24e1cc2b796cfdf954dc0f39753c578e02a4003040000020432050000419c0000000000',
-//  )
+  //  assert.strictEqual(
+  //    ap_tx,
+  //    '0xf8041f080301010000030001010068de6e1566e333753df02b2446f24e1cc2b796cfdf954dc0f39753c578e02a4003040000020432050000419c0000000000',
+  //  )
   console.log(`assethub > polkadot ok`)
 
   // assethub:hydradx
@@ -133,10 +133,10 @@ async function tx_test() {
       '0x68de6e1566e333753df02b2446f24e1cc2b796cfdf954dc0f39753c578e02a40',
     )
   ).toHex()
-//  assert.strictEqual(
-//    ah_tx,
-//    '0x0101041f0803010100c91f030001010068de6e1566e333753df02b2446f24e1cc2b796cfdf954dc0f39753c578e02a400304000002043205011f00419c0000000000',
-//  )
+  //  assert.strictEqual(
+  //    ah_tx,
+  //    '0x0101041f0803010100c91f030001010068de6e1566e333753df02b2446f24e1cc2b796cfdf954dc0f39753c578e02a400304000002043205011f00419c0000000000',
+  //  )
   console.log(`assethub > hydradx ok`)
 
   console.log(`transaction routing ok`)
@@ -165,7 +165,7 @@ async function main() {
   //await test_connection()
   await tx_test()
   await xcm_test()
-  // uncomment and insert seed  
+  // uncomment and insert seed
   //await broadcast_transaction()
   console.log(`api tests finished`)
 }

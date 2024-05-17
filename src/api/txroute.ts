@@ -8,7 +8,7 @@ import {
   assethub_to_hydra,
   moonriver2turing,
   turing2moonriver,
-  turing2mangata
+  turing2mangata,
 } from './DraftTx'
 
 /// spit out a tx

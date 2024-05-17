@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
 const refreshTokenSchema = new mongoose.Schema({
   user: {
@@ -18,6 +18,6 @@ const refreshTokenSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-});
+})
 
-export default mongoose.model('RefreshToken', refreshTokenSchema);
+export default mongoose.model('RefreshToken', refreshTokenSchema)
