@@ -6,6 +6,7 @@
   "scripts": {
     "build": "cp .env.example .env && npm install && tsc",
     "api": "node dist/app.js",
+    "start": "NODE_ENV=development nodemon dist/app.js",
     "test": "ts-node src/api/tests.ts",
     "format": "npx prettier --write *.ts && npx prettier --write 'src/**/*.ts'",
     "resetdb": "sh resetdb.sh"

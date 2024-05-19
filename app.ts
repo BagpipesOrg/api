@@ -23,6 +23,8 @@ import {
 dotenv.config()
 
 const app = express()
+
+
 const PORT = process.env.PORT || 8080
 
 import testRoute from './src/routes/test'
@@ -34,7 +36,7 @@ import chainRoute from './src/routes/chain'
 import templateRoute from './src/routes/template'
 import actionsRoute from './src/routes/actions'
 
-// CORS options
+// // CORS options
 const corsOptions = {
   //  origin: 'http://localhost:5173', | the api is reverse proxied from nginx, so this does not work
   credentials: false,
@@ -43,11 +45,20 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 }
 
-app.use(cors(corsOptions))
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+
+app.use(cors(corsOptions));
+app.use(express.json());
+
+
+// TODO
+app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true }));
+
 // Use body-parser middleware to parse JSON
 app.use(bodyParser.json())
+app.use(cors());
+
+app.use(express.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
 
 app.use(cookieParser(process.env.COOKIE_PARSER_SECRET))
 /*
