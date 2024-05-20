@@ -47,7 +47,7 @@ export async function getHydraDxSellPrice(assetIn: string, assetOut: string, amo
 
 export async function getHydradxAssetSymbolDecimals(assetid: number) {
   const api = await connectToWsEndpoint('hydraDx')
-  const resp: any = (await api.query.assetRegistry.assetMetadataMap(assetid)).toHuman()
+  const resp: any = (await api.query.assetRegistry.assets(assetid)).toHuman()
   return resp
 }
 
