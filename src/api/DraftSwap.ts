@@ -136,7 +136,7 @@ export async function hydradx_omnipool_sell(
   const resp: any = await getHydradxAssetSymbolDecimals(Number(assetin));
 
   const tokenDecimals = Number(resp.decimals);
-  const minBuyAmount = Math.round(aout * 1e10);
+  const minBuyAmount = BigInt(Math.round(aout * 1e10));
   console.log(
     `[hydradx_omnipool_sell] my input:`,
     assetin,
@@ -151,7 +151,7 @@ export async function hydradx_omnipool_sell(
   // get the swap routes
   const route = await hdx_get_routes(assetin, assetout, rawamount);
   var tx: any;
-
+  console.log(`working with: `, assetin, assetout, submitamount);
   console.log(`got route back: `, route);
   if (route.length == 1) {
     console.log(`route log`);
@@ -172,7 +172,7 @@ export async function hydradx_omnipool_sell(
       assetin.toString(),
       assetout.toString(),
       submitamount.toString(),
-      minBuyAmount / 10000,
+      minBuyAmount / BigInt(10000),
       route
     );
     console.log(`selltx router.sell drafted`);
