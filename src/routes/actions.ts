@@ -6,8 +6,16 @@ import { create_swap } from '../scenarios/parse_db'
 import { generic_system_remark } from '../api/DraftTx'
 import { route_tx } from './../api/txroute'
 
+import { executeChainQueryMethod } from "../api/query"
+
 dotenv.config()
 const router = Router()
+
+import bodyParser from 'body-parser';
+
+router.use(bodyParser.json());
+
+
 
 // xcm asset transfer
 // call a scenerio - call a scenario you created in the UI - todo
@@ -94,5 +102,29 @@ router.post('/system-remark', async (req, res) => {
   const tx = (await generic_system_remark(chain, msg)).toHex()
   res.json({ result: tx })
 })
+
+// Query Chain  | chainKey, palletName, methodName, params, atBlock
+// curl -X POST -d '{"chain": "polkadot", "pallet_name": "timestamp", "method_name": "", "params", "block": ""}'
+router.post('/query', async (req, res) => {
+  const chain: string = req.body.chain
+  const pallet_name: string = req.body.pallet_name
+  const method_name: string = req.body.method_name
+  const block: string = req.body.block
+const params: any[] = req.body.params
+  console.log(`Query request: `, req.body)
+  console.log(`input: `, chain, pallet_name, method_name, block, params)
+
+  try {
+  const tx = (await executeChainQueryMethod(chain, pallet_name, method_name, params, block)).toHex();
+  
+  return res.json({result: tx})
+} catch (error) {
+  return res.json("Error")
+}
+
+})
+
+
+
 
 export default router
