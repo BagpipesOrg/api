@@ -115,7 +115,7 @@ const params: any[] = req.body.params
   console.log(`input: `, chain, pallet_name, method_name, block, params)
 
   try {
-  const tx = (await executeChainQueryMethod(chain, pallet_name, method_name, params, block)).toHex();
+  const tx = (await executeChainQueryMethod(chain, pallet_name, method_name, params, block)).toHuman();
   
   return res.json({result: tx})
 } catch (error) {

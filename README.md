@@ -66,6 +66,14 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"id": "Uvervffcw"}' http
 $ {"result":"assetHub > xTransfer > polkadot"}
 ```
 
+##### Path: `/api/actions/query`:
+
+### Code:
+```shell
+curl -X POST -H "Content-Type: application/json" -d '{"chain": "polkadot", "pallet_name": "timestamp", "method_name": "now", "params": []}' http://localhost:8080/api/actions/query
+{"result":"1,716,394,878,001"
+```
+
 
 ##### Path: `/api/scenario/info/full`;   
 Get full information about a scenario.  
