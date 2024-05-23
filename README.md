@@ -77,6 +77,8 @@ curl -X POST -H "Content-Type: application/json" -d '{"chain": "polkadot", "pall
 
 ##### Path: `/api/actions/generic-tx-gen`:
 
+Description:
+
 
 ### Code:
 ```shell
