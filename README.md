@@ -75,6 +75,18 @@ curl -X POST -H "Content-Type: application/json" -d '{"chain": "polkadot", "pall
 ```
 
 
+##### Path: `/api/actions/generic-tx-gen`:
+
+
+### Code:
+```shell
+curl -X POST -H "Content-Type: application/json" -d '{"chain": "polkadot", "pallet_name": "System", "method_name": "remark", "params": ["0xDEADBEEF"]}' http://localhost:8080/api/actions/generic-tx-gen
+{"result":"0x2004000010deadbeef"}
+```
+
+
+
+
 ##### Path: `/api/scenario/info/full`;   
 Get full information about a scenario.  
 

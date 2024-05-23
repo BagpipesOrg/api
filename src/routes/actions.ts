@@ -128,8 +128,12 @@ router.post('/query', async (req, res) => {
   }
 })
 
-// curl -X POST -H "Content-Type: application/json" -d '{"chain": "polkadot", "pallet_name": "timestamp", "method_name": "now", "params": []}' http://localhost:8080/api/actions/generic-tx-gen
+// c
+/*
+curl -X POST -H "Content-Type: application/json" -d '{"chain": "polkadot", "pallet_name": "System", "method_name": "remark", "params": ["0xDEADBEEF"]}' http://localhost:8080/api/actions/generic-tx-gen
+{"result":"0x2004000010deadbeef"}
 
+*/
 router.post('/generic-tx-gen', async (req, res) => {
   const chain: string = req.body.chain
   const pallet_name: string = req.body.pallet_name
