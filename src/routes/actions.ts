@@ -6,16 +6,14 @@ import { create_swap } from '../scenarios/parse_db'
 import { generic_system_remark } from '../api/DraftTx'
 import { route_tx } from './../api/txroute'
 
-import { executeChainQueryMethod } from "../api/query"
+import { executeChainQueryMethod, GenerateGenericChainTx } from '../api/query'
 
 dotenv.config()
 const router = Router()
 
-import bodyParser from 'body-parser';
+import bodyParser from 'body-parser'
 
-router.use(bodyParser.json());
-
-
+router.use(bodyParser.json())
 
 // xcm asset transfer
 // call a scenerio - call a scenario you created in the UI - todo
@@ -98,33 +96,57 @@ router.post('/system-remark', async (req, res) => {
       error: 'invalid chain, select one of: turing, moonriver, mangatax, assetHub, interlay, hydraDx, polkadot',
     })
   }
-  console.log(`making system remark with: `, chain, msg)
-  const tx = (await generic_system_remark(chain, msg)).toHex()
-  res.json({ result: tx })
+  try {
+    console.log(`making system remark with: `, chain, msg)
+    const tx = (await generic_system_remark(chain, msg)).toHex()
+    return res.json({ result: tx })
+  } catch (error) {
+    return res.json({ error: 'could not generate tx' })
+  }
 })
 
 // Query Chain  | chainKey, palletName, methodName, params, atBlock
-// curl -X POST -d '{"chain": "polkadot", "pallet_name": "timestamp", "method_name": "", "params", "block": ""}'
+/*
+curl -X POST -H "Content-Type: application/json" -d '{"chain": "polkadot", "pallet_name": "timestamp", "method_name": "now", "params": []}' http://localhost:8080/api/actions/query
+{"result":"1,716,394,878,001"}
+*/
 router.post('/query', async (req, res) => {
   const chain: string = req.body.chain
   const pallet_name: string = req.body.pallet_name
   const method_name: string = req.body.method_name
   const block: string = req.body.block
-const params: any[] = req.body.params
+  const params: any[] = req.body.params
   console.log(`Query request: `, req.body)
   console.log(`input: `, chain, pallet_name, method_name, block, params)
 
   try {
-  const tx = (await executeChainQueryMethod(chain, pallet_name, method_name, params, block)).toHuman();
-  
-  return res.json({result: tx})
-} catch (error) {
-  return res.json("Error")
-}
+    const tx = (await executeChainQueryMethod(chain, pallet_name, method_name, params, block)).toHuman()
 
+    return res.json({ result: tx })
+  } catch (error) {
+    return res.json('Error')
+  }
 })
 
+// c
+/*
+curl -X POST -H "Content-Type: application/json" -d '{"chain": "polkadot", "pallet_name": "System", "method_name": "remark", "params": ["0xDEADBEEF"]}' http://localhost:8080/api/actions/generic-tx-gen
+{"result":"0x2004000010deadbeef"}
 
+*/
+router.post('/generic-tx-gen', async (req, res) => {
+  const chain: string = req.body.chain
+  const pallet_name: string = req.body.pallet_name
+  const method_name: string = req.body.method_name
 
+  const params: any[] = req.body.params
+
+  try {
+    const tx = await GenerateGenericChainTx(chain, pallet_name, method_name, params)
+    return res.json({ result: tx })
+  } catch (error) {
+    return res.json('Error, could not generate transaction, check your input')
+  }
+})
 
 export default router
