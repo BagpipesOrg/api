@@ -12,7 +12,7 @@ const router = Router()
 
 // save data and generate storage key/short url key
 router.post('/saveUrl', async (req, res) => {
-  console.log(`saveUrl`);
+  console.log(`saveUrl`)
   const longUrl = req.body
   //console.log(`Saving `, longUrl);
   try {

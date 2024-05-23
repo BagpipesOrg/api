@@ -24,7 +24,6 @@ dotenv.config()
 
 const app = express()
 
-
 const PORT = process.env.PORT || 8080
 
 import testRoute from './src/routes/test'
@@ -45,19 +44,17 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 }
 
-
-app.use(cors(corsOptions));
+app.use(cors(corsOptions))
 //app.use(express.json());
-
 
 // TODO
 //app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true }));
 
 // Use body-parser middleware to parse JSON
 app.use(bodyParser.json())
-app.use(cors());
+app.use(cors())
 
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }))
 // app.use(bodyParser.json());
 
 app.use(cookieParser(process.env.COOKIE_PARSER_SECRET))
