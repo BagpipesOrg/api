@@ -37,7 +37,7 @@ import actionsRoute from './src/routes/actions'
 
 // // CORS options
 const corsOptions = {
-  //  origin: 'http://localhost:5173', | the api is reverse proxied from nginx, so this does not work
+  origin: 'http://localhost:5173',
   credentials: false,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   preflightContinue: false,
@@ -86,7 +86,7 @@ const httpServer = createServer(app)
 
 // Listen for HTTP connections.
 httpServer.listen(PORT, () => {
-  logger.info(`Server is running on port ${PORT}`)
+  logger.info(`Server is listening and running on port ${PORT}`)
 })
 
 // // todo add kusamas

@@ -101,7 +101,7 @@ router.get('/fetchWebhookData/:uuid', async (req, res) => {
   const webhookSiteApiKey = process.env.WEBHOOK_SITE_API_KEY
 
   try {
-    const response = await axios.get(`https://webhook.site/token/${token_id}/requests`, {
+    const response = await axios.get(`https://webhook.site/token/${token_id}/request/latest`, {
       headers: {
         Accept: 'application/json',
         'Api-Key': webhookSiteApiKey,
