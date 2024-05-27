@@ -6,16 +6,17 @@ dotenv.config()
 const router = Router()
 
 router.post('/executeHttpRequest', async (req, res) => {
+  console.log('Received HTTP request:', req.body)
   try {
     const formData = req.body
     console.log('Received formData for HTTP request:', formData)
-    const { url, method, headers = {}, value = {} } = formData
+    const { url, method, headers = {}, requestContent = {} } = formData
 
     // Use the value as the request body directly
-    let requestBody = value
+    let requestBody = { requestContent } ;
 
     // Transform headers from array to object
-    let formattedHeaders = headers.reduce((acc, header) => {
+    let formattedHeaders = headers.reduce((acc: { [x: string]: any }, header: { key: string | number; value: any }) => {
       if (header.key && header.value) {
         // Ensure that key and value are present
         acc[header.key] = header.value
@@ -23,13 +24,19 @@ router.post('/executeHttpRequest', async (req, res) => {
       return acc
     }, {})
 
-    // Execute the HTTP request with Axios
-    const response = await axios({
-      method: method,
-      url: url,
+    console.log('Formatted headers:', formattedHeaders)
+
+    const httParams = {
+      method,
+      url,
       headers: formattedHeaders,
+      // body: requestBody,
       data: requestBody,
-    })
+    }
+
+    console.log('HTTP request params:', httParams)
+    // Execute the HTTP request with Axios
+    const response = await axios(httParams)
 
     // Log the part of the response you're interested in, for debugging
     console.log('HTTP request successful, status:', response.status)
