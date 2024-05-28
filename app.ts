@@ -25,6 +25,7 @@ dotenv.config()
 const app = express()
 
 const PORT = process.env.PORT || 8080
+const ENV = process.env.NODE_ENV || 'development'
 
 import testRoute from './src/routes/test'
 import scenarioRoute from './src/routes/scenario'
@@ -37,7 +38,7 @@ import actionsRoute from './src/routes/actions'
 
 // // CORS options
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: ENV === 'development' ? process.env.DEV_URL : process.env.PROD_URL,  
   credentials: false,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   preflightContinue: false,

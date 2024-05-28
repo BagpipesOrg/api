@@ -45,7 +45,11 @@ router.post('/createWebhook', async (req, res) => {
         'Content-Type': 'application/json',
         'api-key': apiKey,
       },
-      // include body if required
+      body: JSON.stringify({
+        cors: true,
+        default_content: 'Bagpipe webhook success.',
+      })
+     
     })
 
     console.log('Response Status:', response.status)
