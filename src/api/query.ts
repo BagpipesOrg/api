@@ -23,7 +23,7 @@ export async function executeChainQueryMethod(
   chain: string,
   palletName: string,
   methodName: string,
-  params: any[],
+  params: any,
   atBlock: string,
 ): Promise<any> {
   const api = await connectToWsEndpoint(chain)
@@ -56,7 +56,7 @@ export async function GenerateGenericChainTx(
   chain: string,
   palletName: string,
   methodName: string,
-  params: any[],
+  params: any,
 ): Promise<any> {
   const api = await connectToWsEndpoint(chain)
   const method = resolveMethod(api, palletName, methodName, true)
