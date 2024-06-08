@@ -57,7 +57,7 @@ $ export WEBHOOK_SITE_API_KEY =
 
 ### Info:  
 
-##### Path: /`api//scenario/info`;   
+##### Path: `/api/scenario/info`;   
 Get information about a scenario.  
 
 ### Code:
@@ -66,12 +66,23 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"id": "Uvervffcw"}' http
 $ {"result":"assetHub > xTransfer > polkadot"}
 ```
 
+
+##### Path: `/api/template/stats/<chain>`:  
+
+### Code:
+```shell
+curl http://127.0.0.1:8080/api/template/stats/assetHub
+{"Amount":2} 
+curl http://127.0.0.1:8080/api/template/stats/polkadot
+{"Amount":1}
+```
+
 ##### Path: `/api/actions/query`:
 
 ### Code:
 ```shell
 curl -X POST -H "Content-Type: application/json" -d '{"chain": "polkadot", "pallet_name": "timestamp", "method_name": "now", "params": []}' http://localhost:8080/api/actions/query
-{"result":"1,716,394,878,001"
+{"result":"1,716,394,878,001"}
 ```
 
 

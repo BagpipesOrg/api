@@ -5,7 +5,7 @@ import shortid from 'shortid'
 
 import { memoryCache } from './cache' // Import memoryCache from cache.ts
 
-interface UrlData {
+export interface UrlData {
   shortUrl: string
   longUrl: string
 }
@@ -16,14 +16,14 @@ interface Database {
 
 const DB_FILE_PATH = path.join(__dirname, 'urls2.json')
 
-const readDatabase = async (): Promise<Database> => {
+export const readDatabase = async (): Promise<Database> => {
   try {
     const data = await fs.readFile(DB_FILE_PATH, 'utf-8')
     //   console.log(`read raw data:`, data);
     //   console.log(`data read`)
     return JSON.parse(data) as Database
   } catch (error) {
-    console.log(`read error`)
+    console.log(`read error: `, error)
     return { urls: [] }
   }
 }
