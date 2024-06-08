@@ -7,6 +7,7 @@ import Keyring from '@polkadot/keyring'
 import { hexToU8a, isHex, u8aToHex } from '@polkadot/util'
 import { cryptoWaitReady } from '@polkadot/util-crypto'
 import { broadcastToChain } from './broadcast'
+import { build_scenario_cache } from './templates';
 
 // random account(subkey generate) used for testing
 export function get_test_account() {
@@ -160,11 +161,22 @@ async function broadcast_transaction() {
   console.log(`broadcast_transaction done`)
 }
 
+
+async function test_templates(){
+  console.log(`testing template`);
+
+
+  const lido = await build_scenario_cache();
+  console.log(`length of list: `, lido.length);
+  console.log(`testing template done`);
+}
+
 async function main() {
   console.log(`running api tests`)
   //await test_connection()
-  await tx_test()
-  await xcm_test()
+  //await tx_test()
+  //await xcm_test()
+  await test_templates();
   // uncomment and insert seed
   //await broadcast_transaction()
   console.log(`api tests finished`)

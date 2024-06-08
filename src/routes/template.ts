@@ -44,9 +44,15 @@ router.get('/getUrl/:shortUrl', async (req, res) => {
   }
 })
 
+
+/*
+
 // use template - todo
 router.post('/call', (req, res) => {
   const jsonData = req.body.scenarioid
   res.json({ receivedData: 'todo' })
 })
+
+*/
+
 export default router

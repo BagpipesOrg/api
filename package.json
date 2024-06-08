@@ -1,6 +1,6 @@
 {
   "name": "bagpipes-api",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Bagpipes XCM api",
   "main": "index.js",
   "scripts": {
