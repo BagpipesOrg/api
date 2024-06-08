@@ -23,7 +23,7 @@ export const readDatabase = async (): Promise<Database> => {
     //   console.log(`data read`)
     return JSON.parse(data) as Database
   } catch (error) {
-    console.log(`read error`)
+    console.log(`read error: `, error)
     return { urls: [] }
   }
 }

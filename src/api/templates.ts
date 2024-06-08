@@ -15,7 +15,8 @@ export async function build_scenario_cache(): Promise<any[]> {
       const get_data = urlData.longUrl;
       const decoded = await decompressString(get_data);
      // console.log(`decoded: `, decoded)
-      const deep_coded = await scenario_detailed_info(JSON.parse(decoded));
+    const scenario_id = urlData.shortUrl;
+      const deep_coded = await scenario_detailed_info(JSON.parse(decoded), scenario_id);
     //  console.log(`Deep: ${deep_coded}`)
         scenario_listan.push(deep_coded)
     //      console.log('------')
@@ -26,4 +27,13 @@ export async function build_scenario_cache(): Promise<any[]> {
 }
 
 
-function template_stats(){}
+export async function template_stats(chain: string){
+    const lido: any[] = await build_scenario_cache();
+    const findchain = chain;//'assetHub';
+    
+    const filtered = lido.filter((obj) => {
+      return obj.source_chain == findchain || obj.dest_chain == findchain;
+    });
+    
+    return filtered;
+}

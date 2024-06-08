@@ -166,8 +166,14 @@ async function test_templates(){
   console.log(`testing template`);
 
 
-  const lido = await build_scenario_cache();
+  const lido: any[] = await build_scenario_cache();
   console.log(`length of list: `, lido.length);
+  const findchain = "assetHub";
+  const filtered = lido.filter((obj) => {
+    return obj.source_chain === findchain || obj.dest_chain == findchain;
+  });
+  
+  console.log(`filtered list: `, filtered);
   console.log(`testing template done`);
 }
 

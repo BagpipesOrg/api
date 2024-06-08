@@ -393,12 +393,13 @@ be able to provide an output like this:
   }
 This only supports single action scenarios
 */
-export async function scenario_detailed_info(scenario_data: Graph): Promise<any> {
+export async function scenario_detailed_info(scenario_data: Graph, scenario_id?: string): Promise<any> {
   const source_asset = ''
   const source_amount = ''
   const tx_type = ''
   //console.log(`scenario data:`, scenario_data.nodes)
   var output = {
+    scenario_id: scenario_id, 
     source_asset: '',
     source_amount: '',
     source_chain: '',
