@@ -38,7 +38,7 @@ import actionsRoute from './src/routes/actions'
 
 // // CORS options
 const corsOptions = {
-  origin: ENV === 'development' ? process.env.DEV_URL : process.env.PROD_URL,  
+  origin: ENV === 'development' ? process.env.DEV_URL : process.env.PROD_URL,
   credentials: false,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   preflightContinue: false,
@@ -82,6 +82,12 @@ app.use('/api/hrmp', hrmpRoute)
 app.use('/api/chain', chainRoute)
 app.use('/api/template', templateRoute)
 app.use('/api/actions', actionsRoute)
+
+
+app.get('/', async (req, res) => {
+   res.json({ success: true, documentation: 'https://docs.bagpipes.io/docs/api/docs' })
+})
+
 
 const httpServer = createServer(app)
 

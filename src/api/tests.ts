@@ -7,7 +7,7 @@ import Keyring from '@polkadot/keyring'
 import { hexToU8a, isHex, u8aToHex } from '@polkadot/util'
 import { cryptoWaitReady } from '@polkadot/util-crypto'
 import { broadcastToChain } from './broadcast'
-import { build_scenario_cache } from './templates';
+import { build_scenario_cache } from './templates'
 
 // random account(subkey generate) used for testing
 export function get_test_account() {
@@ -161,20 +161,18 @@ async function broadcast_transaction() {
   console.log(`broadcast_transaction done`)
 }
 
+async function test_templates() {
+  console.log(`testing template`)
 
-async function test_templates(){
-  console.log(`testing template`);
-
-
-  const lido: any[] = await build_scenario_cache();
-  console.log(`length of list: `, lido.length);
-  const findchain = "assetHub";
+  const lido: any[] = await build_scenario_cache()
+  console.log(`length of list: `, lido.length)
+  const findchain = 'assetHub'
   const filtered = lido.filter((obj) => {
-    return obj.source_chain === findchain || obj.dest_chain == findchain;
-  });
-  
-  console.log(`filtered list: `, filtered);
-  console.log(`testing template done`);
+    return obj.source_chain === findchain || obj.dest_chain == findchain
+  })
+
+  console.log(`filtered list: `, filtered)
+  console.log(`testing template done`)
 }
 
 async function main() {
@@ -182,7 +180,7 @@ async function main() {
   //await test_connection()
   //await tx_test()
   //await xcm_test()
-  await test_templates();
+  await test_templates()
   // uncomment and insert seed
   //await broadcast_transaction()
   console.log(`api tests finished`)

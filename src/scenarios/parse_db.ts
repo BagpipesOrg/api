@@ -338,7 +338,7 @@ export function multi_scenario_info(scenario_data: Graph): scenario_summary[] {
     }
     if (node.type === 'action' && node.formData?.action) {
       tmp_scenario['txtype'] = node.formData.actionData.actionType
-     // console.log(`action node`, node.formData)
+      // console.log(`action node`, node.formData)
       tmp_scenario['source_amount'] = node.formData.actionData.source.amount
       tmp_scenario['assetid'] = node.formData.actionData.source.assetId
       tmp_scenario['amount'] = node.formData.actionData.source.amount
@@ -366,21 +366,21 @@ export function multi_scenario_info(scenario_data: Graph): scenario_summary[] {
 function keepOnlyKey<T extends object>(obj: T, keyToKeep: keyof T): void {
   for (const key in obj) {
     if (key !== keyToKeep) {
-      delete obj[key];
+      delete obj[key]
     }
   }
 }
 
 type OutputType = {
-  source_asset: string;
-  source_amount: string;
-  source_chain: string;
-  tx_type: string;
-  dest_asset: string;
-  dest_amount: string;
-  dest_chain: string;
-  dest_address: string;
-};
+  source_asset: string
+  source_amount: string
+  source_chain: string
+  tx_type: string
+  dest_asset: string
+  dest_amount: string
+  dest_chain: string
+  dest_address: string
+}
 
 /*
 be able to provide an output like this: 
@@ -399,7 +399,7 @@ export async function scenario_detailed_info(scenario_data: Graph, scenario_id?:
   const tx_type = ''
   //console.log(`scenario data:`, scenario_data.nodes)
   var output = {
-    scenario_id: scenario_id, 
+    scenario_id: scenario_id,
     source_asset: '',
     source_amount: '',
     source_chain: '',
@@ -407,7 +407,7 @@ export async function scenario_detailed_info(scenario_data: Graph, scenario_id?:
     dest_asset: '',
     dest_amount: '',
     dest_chain: '',
- //   dest_address: '',
+    //   dest_address: '',
   }
 
   const chainList: string[] = []
@@ -421,12 +421,10 @@ export async function scenario_detailed_info(scenario_data: Graph, scenario_id?:
 */
   const addresses: string[] = []
 
-
   for (const node of scenario_data.nodes) {
-
     if (node.type === 'webhook') {
       //output = { tx_type: "webhook"};
-      output['tx_type'] = 'webhook';
+      output['tx_type'] = 'webhook'
       delete output['dest_address']
       delete output['dest_asset']
       delete output['dest_amount']
@@ -434,35 +432,34 @@ export async function scenario_detailed_info(scenario_data: Graph, scenario_id?:
       delete output['source_asset']
       delete output['source_amount']
       delete output['source_chain']
-    } 
+    }
 
     if (node.type === 'http') {
       output['tx_type'] = 'http'
-      output['url'] = node.formData.url;
+      output['url'] = node.formData.url
     }
 
     if (node.type === 'chain') {
-     // console.log(`Chain Name: ${node.formData?.chain}`)
+      // console.log(`Chain Name: ${node.formData?.chain}`)
       chainList.push(node.formData.chain)
       //    amounts.push(node.formData.asset.assetId.toString());
       if (node.formData.asset.assetId) {
-       assets.push(node.formData.asset.assetId.toString())
+        assets.push(node.formData.asset.assetId.toString())
       }
-  //    addresses.push(node.formData.address)
+      //    addresses.push(node.formData.address)
     } else if (node.type === 'action' && node.formData?.action) {
-   //   console.log(`node form data: `, node.formData);
+      //   console.log(`node form data: `, node.formData);
       if (node.formData.action == 'Remark') {
         output['tx_type'] = 'Remark'
-        keepOnlyKey(output, "tx_type")
+        keepOnlyKey(output, 'tx_type')
       } else {
         output['tx_type'] = node.formData.actionData.actionType
-      //  console.log(`action node`, node.formData)
+        //  console.log(`action node`, node.formData)
         output['source_amount'] = node.formData.actionData.source.amount
         output['source_asset'] = node.formData.actionData.source.assetId.toString()
-       
       }
       if (node.formData.actionData) {
-       // console.log(`node.formData.actionData is true:`, node.formData.actionData)
+        // console.log(`node.formData.actionData is true:`, node.formData.actionData)
         addresses.push(node.formData.actionData.target.address)
         const schain = node.formData.actionData.source.chain
         const dchain = node.formData.actionData.target.chain
@@ -477,13 +474,12 @@ export async function scenario_detailed_info(scenario_data: Graph, scenario_id?:
   }
   // output['source_asset'] = assets[0];
   //  output['source_amount'] = amounts[0];
-  if (assets.length >= 1 && amounts.length >= 1)  {
+  if (assets.length >= 1 && amounts.length >= 1) {
     output['dest_asset'] = assets[1]
-    output['dest_amount'] =  amounts[1];
-   
+    output['dest_amount'] = amounts[1]
   }
   //output['dest_address'] = "address scrubbed"//addresses[1]
- // console.log(`output: `, output)
+  // console.log(`output: `, output)
   return output
 }
 
