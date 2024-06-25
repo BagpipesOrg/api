@@ -150,6 +150,13 @@ export const CHAIN_METADATA = {
     transferFunction: 'xcmPallet.limitedReserveTransferAssets',
     nativeAccount: true,
   },
+  moonbeam: {
+    chain: 'Moonbeam',
+    endpoints: ['wss://wss.api.moonbeam.network', 'wss://moonbeam-rpc.dwellir.com'],
+    queryBalancePaths: ['system.account'],
+    transferFunction: 'xcmPallet.limitedReserveTransferAssets',
+    nativeAccount: true,
+  },
   hydraDx: {
     chain: 'HydraDX',
     endpoints: [

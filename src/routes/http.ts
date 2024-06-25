@@ -13,7 +13,7 @@ router.post('/executeHttpRequest', async (req, res) => {
     const { url, method, headers = {}, requestContent = {} } = formData
 
     // Use the value as the request body directly
-    let requestBody = { requestContent } ;
+    let requestBody = { requestContent }
 
     // Transform headers from array to object
     let formattedHeaders = headers.reduce((acc: { [x: string]: any }, header: { key: string | number; value: any }) => {
