@@ -17,8 +17,9 @@ import {
   assethub2moonbeam,
   turing2mangata,
 } from './DraftTx'
+import { isEthereumAddress } from '@polkadot/util-crypto'
 
-import { get_moonbeam_asset_decimals } from './assethelp';
+import { get_moonbeam_asset_decimals } from './assethelp'
 
 /// spit out a tx
 /// input: source chain, dest chain, assetid, amount
@@ -53,6 +54,13 @@ export async function route_tx(
       console.log('handleTransfer for HydraDx to Polkadot...')
       const paraid2 = 0
       return hydraDxToParachain(amount, assetid, destinationaddress, paraid2)
+
+    case 'polkadot:moonbeam':
+      if (!isEthereumAddress(destinationaddress)) {
+        //  evm account check
+        throw new Error('Invalid address, select your evm account')
+      }
+      return polkadot2moonbeam(amount.toString(), destinationaddress)
 
     case 'moonbeam:polkadot':
       return moon2polkadot(destinationaddress, amount)

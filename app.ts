@@ -83,11 +83,9 @@ app.use('/api/chain', chainRoute)
 app.use('/api/template', templateRoute)
 app.use('/api/actions', actionsRoute)
 
-
 app.get('/', async (req, res) => {
-   res.json({ success: true, documentation: 'https://docs.bagpipes.io/docs/api/docs' })
+  res.json({ success: true, documentation: 'https://docs.bagpipes.io/docs/api/docs' })
 })
-
 
 const httpServer = createServer(app)
 
