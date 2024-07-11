@@ -10,10 +10,11 @@
 ## Supported chains: 
  -  Assethub(Polkadot)
  -  Polkadot  
- -  HydraDx(Polkadot)  
+ -  Hydration(Polkadot)  
  -  Interlay(Polkadot)   
  -  Turing(Kusama)  
  -  Moonriver(Kusama)
+ -  Moonbeam
 
 
 ## DB:    
