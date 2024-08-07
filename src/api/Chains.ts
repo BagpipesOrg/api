@@ -187,6 +187,11 @@ export const CHAIN_METADATA = {
     queryBalancePaths: ['system.account', 'assets.account'],
     nativeAccount: true,
   },
+  rococo_contracts: {
+    chain: "rococo_contracts",
+    endpoints: ["wss://rococo-contracts-rpc.polkadot.io"],
+    nativeAccount: true,
+  }, 
 
   mangatax: {
     chain: 'mangatax',
