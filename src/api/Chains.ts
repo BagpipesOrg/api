@@ -188,10 +188,10 @@ export const CHAIN_METADATA = {
     nativeAccount: true,
   },
   rococo_contracts: {
-    chain: "rococo_contracts",
-    endpoints: ["wss://rococo-contracts-rpc.polkadot.io"],
+    chain: 'rococo_contracts',
+    endpoints: ['wss://rococo-contracts-rpc.polkadot.io'],
     nativeAccount: true,
-  }, 
+  },
 
   mangatax: {
     chain: 'mangatax',

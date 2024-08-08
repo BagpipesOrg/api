@@ -35,7 +35,7 @@ import hrmpRoute from './src/routes/hrmp'
 import chainRoute from './src/routes/chain'
 import templateRoute from './src/routes/template'
 import actionsRoute from './src/routes/actions'
-import inkRoute from './src/routes/ink';
+import inkRoute from './src/routes/ink'
 
 // // CORS options
 const corsOptions = {
