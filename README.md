@@ -58,6 +58,26 @@ $ export WEBHOOK_SITE_API_KEY =
 
 ### Info:  
 
+##### Path: `/api/ink/contract_info`    
+
+Description:   
+Get information from a deployed !ink contract on Rococo's Contracts chain.   
+input:  contract's address and abi metadata, contract.json file
+
+### Code:   
+```shell
+curl -X POST http://localhost:8080/api/ink/contract_info \
+     -H "Content-Type: application/json" \
+     -d @- <<EOF
+{
+  "abiJson": $(cat flipper.json),
+  "address": "5GLTeaqe8DqZbqhhzV6i2MdaG5zJbps84KwgjewUVo75gwga"
+}
+EOF
+{"sucess":true,"description":[{"function_name":"flip","selector":"0x633aa551","mutates":true,"args":[]},{"function_name":"get","selector":"0x2f865bd9","mutates":false,"args":[]}]}
+```
+
+
 ##### Path: `/api/scenario/info`;   
 Get information about a scenario.  
 
