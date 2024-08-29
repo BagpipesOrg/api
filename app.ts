@@ -37,6 +37,9 @@ import templateRoute from './src/routes/template'
 import actionsRoute from './src/routes/actions'
 import inkRoute from './src/routes/ink'
 
+import PreviewRoute from './src/routes/preview'
+
+
 // // CORS options
 const corsOptions = {
   origin: ENV === 'development' ? process.env.DEV_URL : process.env.PROD_URL,
@@ -84,6 +87,8 @@ app.use('/api/chain', chainRoute)
 app.use('/api/template', templateRoute)
 app.use('/api/actions', actionsRoute)
 app.use('/api/ink', inkRoute)
+app.use('/api/info', PreviewRoute)
+
 
 app.get('/', async (req, res) => {
   res.json({ success: true, documentation: 'https://docs.bagpipes.io/docs/api/docs' })

@@ -48,6 +48,7 @@ If you want to enable webhooks, you need to set the enviromental variable:
 $ export WEBHOOK_SITE_API_KEY =
 ```
 
++ if you want to enable /preview you have to install and run headless chrome
 
 
 
@@ -77,6 +78,17 @@ EOF
 {"sucess":true,"description":[{"function_name":"flip","selector":"0x633aa551","mutates":true,"args":[]},{"function_name":"get","selector":"0x2f865bd9","mutates":false,"args":[]}]}
 ```
 
+
+##### Path: `/api/info/preview`;   
+Get generate preview information about scenario.  
+### Code:
+```shell
+curl -XGET https://api.bagpipes.io/api/info/preview -d {scenario_id: 'scenario id goes here'}
+```
+#### Output:
+```json
+{ info: "same info as /api/scenario/info", img: "base64 encoded image of the scenario" }
+```
 
 ##### Path: `/api/scenario/info`;   
 Get information about a scenario.  
