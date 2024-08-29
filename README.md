@@ -90,8 +90,6 @@ curl -XGET https://api.bagpipes.io/api/info/preview -d {scenario_id: 'scenario i
 { info: "same info as /api/scenario/info", img: "base64 encoded image of the scenario" }
 ```
 
-
-
 ##### Path: `/api/scenario/info`;   
 Get information about a scenario.  
 
