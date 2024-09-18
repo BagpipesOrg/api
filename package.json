@@ -53,6 +53,7 @@
     "@types/joi": "^17.2.3",
     "@types/mongoose": "^5.11.97",
     "@types/shortid": "^0.0.32",
+    "puppeteer": "22.15.0",
     "assert": "^2.1.0",
     "axios": "^1.7.3",
     "bcryptjs": "^2.4.3",
