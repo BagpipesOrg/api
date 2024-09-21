@@ -15,6 +15,7 @@
  -  Turing(Kusama)  
  -  Moonriver(Kusama)
  -  Moonbeam
+ -  Rococo   
 
 
 ## DB:    
