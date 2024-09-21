@@ -5,7 +5,7 @@
 [![Book - mdbook](https://img.shields.io/badge/Book-mdbook-orange?logo=gitbook&logoColor=white&style=flat-square)](https://xcmsend.github.io)   
  [![General badge](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://shields.io/)
 
-[xcmsend.github.io/api](https://xcmsend.github.io/api/index.html)
+[current documentation](https://docs.bagpipes.io/docs/api/docs)  
 
 ## Supported chains: 
  -  Assethub(Polkadot)
