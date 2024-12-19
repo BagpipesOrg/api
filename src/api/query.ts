@@ -1,5 +1,5 @@
 import { Codec } from '@polkadot/types/types'
-import connectToWsEndpoint from './connect'
+import { connectToWsEndpoint } from './connect'
 import { ApiPromise } from '@polkadot/api'
 import { SubmittableExtrinsic } from '@polkadot/api/types'
 

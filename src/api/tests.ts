@@ -1,4 +1,4 @@
-import connectToWsEndpoint from './connect'
+import { connectToWsEndpoint } from './connect'
 import { route_tx } from './txroute'
 import * as assert from 'assert'
 import { inandoutchannels } from './xcmhelper'

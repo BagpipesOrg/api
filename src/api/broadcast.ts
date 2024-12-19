@@ -1,7 +1,7 @@
 // broadcast.ts
 
 import { ApiPromise } from '@polkadot/api'
-import connectToWsEndpoint from './connect'
+import { connectToWsEndpoint } from './connect'
 
 /**
  * Broadcast a signed extrinsic to the chain.

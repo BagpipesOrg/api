@@ -1,5 +1,5 @@
 import { TradeRouter, CachingPoolService, PoolType } from '@galacticcouncil/sdk'
-import connectToWsEndpoint from './connect'
+import { connectToWsEndpoint } from './connect'
 
 let tradeRouter: any
 
