@@ -12,7 +12,7 @@ import '@polkadot/types-augment'
 
 //import endpoints from "./WsEndpoints";
 //import { ChainInfo, listChains, CHAIN_METADATA } from "./Chains";
-import connectToWsEndpoint from './connect'
+import { connectToWsEndpoint } from './connect'
 
 //import { createType } from '@polkadot/types';
 

@@ -1,6 +1,6 @@
 import { ApiPromise } from '@polkadot/api'
 import { ContractPromise } from '@polkadot/api-contract'
-import connectToWsEndpoint from './connect'
+import { connectToWsEndpoint } from './connect'
 
 // list !ink contracts on chain
 async function get_contracts(api: ApiPromise) {

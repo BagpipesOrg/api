@@ -1,4 +1,4 @@
-import connectToWsEndpoint from './connect'
+import { connectToWsEndpoint } from './connect'
 
 export async function find_ingress_polkadot_channels(paraid: number): Promise<[number]> {
   const api = await connectToWsEndpoint('polkadot')
