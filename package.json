@@ -4,7 +4,7 @@
   "description": "Bagpipes XCM api",
   "main": "index.js",
   "scripts": {
-    "build": "cp .env.example .env && npm install && tsc",
+    "build": "cp .env.example .env && npm install -f && tsc",
     "api": "node dist/app.js",
     "start": "NODE_ENV=development nodemon dist/app.js",
     "test": "ts-node src/api/tests.ts",
