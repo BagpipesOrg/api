@@ -2,34 +2,121 @@ import { ApiPromise, WsProvider, SubmittableResult } from '@polkadot/api'
 import { CHAIN_METADATA } from './Chains'
 import { cryptoWaitReady } from '@polkadot/util-crypto'
 
-/**
- * Connects to an endpoint based on a chain. If connection fails, attempts to connect to the next endpoint.
- *
- * @param {string} chain - The chain to connect to.
- * @returns {ApiPromise} - The connected API instance.
- * @throws {Error} - Throws an error if all endpoints fail.
- */
-export default async function connectToWsEndpoint(chain: string): Promise<ApiPromise> {
-  const metadata = CHAIN_METADATA[chain]
 
-  if (!metadata || !metadata.endpoints || metadata.endpoints.length === 0) {
-    throw new Error(`No endpoints found for chain: ${chain}`)
-  }
 
-  // Wait for the crypto libraries to be ready
-  await cryptoWaitReady()
 
-  let lastError: any
-  for (const endpoint of metadata.endpoints) {
-    try {
-      const provider = new WsProvider(endpoint)
-      const api = await ApiPromise.create({ provider, noInitWarn: true })
-      await api.isReady
-      return api
-    } catch (error) {
-      lastError = error
+
+
+
+// Store the API connections in a global map
+const apiConnections = new Map<string, ApiPromise>();
+// Constant to set max reconnection attempts
+const MAX_RECONNECTION_ATTEMPTS = 3;
+const RECONNECTION_TIMEOUT = 5000; // milliseconds
+
+export async function connectToWsEndpoint(chain: string): Promise<ApiPromise> {
+  return getApiInstance(chain);
+}
+
+export async function getApiInstance(chain: string): Promise<ApiPromise> {
+  console.log("getApiInstance chain", chain);
+  if (apiConnections.has(chain)) {
+    const api = apiConnections.get(chain);
+    if (api && api.isConnected) {
+      return api;
+    } else {
+      console.log(`Connection to ${chain} lost. Attempting to reconnect...`);
+      // Attempt to reconnect a few times
+      for (let i = 0; i < 3; i++) {
+        try {
+          await api.connect();
+          console.log(`Reconnected to ${chain} successfully.`);
+          return api;
+        } catch (error) {
+          console.error(
+            `Attempt ${i + 1} failed to reconnect to ${chain}:`,
+            error
+          );
+        }
+      }
+      apiConnections.delete(chain); // Cleanup after failed reconnection attempts
+      throw new Error(
+        `Failed to reconnect to ${chain} after several attempts.`
+      );
     }
   }
 
-  throw lastError
+  // Establish a new connection if we don't have one already
+  console.log(`Establishing new connection to ${chain}...`);
+  const api = await connectToWsEndpoint2(chain);
+  apiConnections.set(chain, api);
+  console.log(`api connections.`, apiConnections);
+  return api;
 }
+
+export async function connectToWsEndpoint2(chain: string): Promise<ApiPromise> {
+  console.log("connectToWsEndpoint connection chain", chain);
+  await cryptoWaitReady();
+
+  const metadata = CHAIN_METADATA[chain];
+  if (!metadata || !metadata.endpoints || metadata.endpoints.length === 0) {
+    
+    console.log(`No endpoints found for chain: ${chain}`);
+    throw new Error(`No endpoints found for chain: ${chain}`);
+  }
+
+  let lastError: any;
+  for (const endpoint of metadata.endpoints) {
+    try {
+      console.log("Attempting to connect to endpoint", endpoint);
+      const provider = new WsProvider(endpoint);
+      const api = await ApiPromise.create({ provider });
+      console.log("api promise connect", api);
+      await api.isReady;
+
+      api.on("disconnected", async () => {
+        console.log(
+          `Disconnected from ${endpoint}. Attempting to reconnect...`
+        );
+        apiConnections.delete(chain); // Delete the existing connection instance
+
+        // Try to create a new connection
+        try {
+          const newApi = await connectToWsEndpoint(chain);
+          apiConnections.set(chain, newApi);
+          console.log(`api connections.`, apiConnections);
+          console.log(`Reconnected to ${chain} successfully.`);
+        } catch (reconnectError) {
+          console.error(`Failed to reconnect to ${chain}:`, reconnectError);
+        }
+      });
+
+      apiConnections.set(chain, api);
+      console.log("Connected to endpoint", endpoint);
+      return api;
+    } catch (error) {
+      lastError = error;
+      console.error(`Failed to connect to endpoint ${endpoint}:`, error);
+
+      if (error.message.includes("Insufficient resources")) {
+           console.error('Error executing chain tx method:', error)
+    throw error
+      } else if (error.message.includes("abnormal closure")) {
+        console.error(`Endpoint ${endpoint} closed the connection abnormally.`)
+
+      } else {
+
+        console.error(`Failed to connect to endpoint ${endpoint}. Trying next...`)
+        throw error
+      }
+    }
+  }
+
+
+  throw lastError;
+}
+
+
+
+
+
